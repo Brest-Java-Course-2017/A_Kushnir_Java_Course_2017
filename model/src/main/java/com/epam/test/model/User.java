@@ -4,6 +4,7 @@ import java.util.Objects;
 
 /**
  * Created by kushnir on 13.2.17.
+ * This is our 1st bean class
  */
 public class User {
     private Integer userID;

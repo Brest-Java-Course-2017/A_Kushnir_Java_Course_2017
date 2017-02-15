@@ -6,6 +6,7 @@ import static org.junit.Assert.*;
 
 /**
  * Created by kushnir on 13.2.17.
+ * This is a Test
  */
 public class UserTest {
 
@@ -13,7 +14,7 @@ public class UserTest {
     public static final String USER_LOGIN = "Login";
     public static final String USER_PASSWORD = "Password";
     public static final String USER_DESCRIPTION = "Description";
-    public User user = new User();
+    User user = new User();
 
     @org.junit.Test
     public void getUserID() throws Exception {
