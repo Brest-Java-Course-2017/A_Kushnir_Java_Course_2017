@@ -1,8 +1,6 @@
-package com.epam.test.model;
+package com.epam.test.dao;
 
 import junit.framework.Assert;
-
-import static org.junit.Assert.*;
 
 /**
  * Created by kushnir on 13.2.17.
