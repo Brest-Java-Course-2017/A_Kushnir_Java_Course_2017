@@ -40,7 +40,6 @@ public class UserDaoImplTest {
         LOGGER.error("execute: tearDownAfterClass()");
     }
 
-
     @Before
     public void beforeTest() {
         LOGGER.error("execute: beforeTest()");
@@ -53,79 +52,79 @@ public class UserDaoImplTest {
 
     @Test
     public void testAddUser() throws Exception {
-        LOGGER.debug("test: addUser()");
+        LOGGER.debug("testAddUser()");
         int beforeCountUser = userDao.getAllUsers().size();
 
         int addedUserId = userDao.addUser(newTestUser);
-        assertNotNull(addedUserId);
+        assertNotNull("testAddUser: User id not received!", addedUserId);
 
         User addedUser = userDao.getUserById(addedUserId);
-        assertNotNull(addedUser);
-
-        assertEquals(addedUser.getLogin(), newTestUser.getLogin());
-        assertEquals(addedUser.getPassword(), newTestUser.getPassword());
-        assertEquals(addedUser.getDescription(), newTestUser.getDescription());
-
-        assertEquals(beforeCountUser + 1, userDao.getAllUsers().size());
+        assertNotNull("testAddUser: User(id: "+addedUserId+") not found!", addedUser);
+        assertEquals("testAddUser: users login not equals!",addedUser.getLogin(), newTestUser.getLogin());
+        assertEquals("testAddUser: users Password not equals!", addedUser.getPassword(), newTestUser.getPassword());
+        assertEquals("testAddUser: users Description not equals!", addedUser.getDescription(), newTestUser.getDescription());
+        assertEquals("testAddUser: count of users before and after does not match!", beforeCountUser + 1, userDao.getAllUsers().size());
     }
-
-    @Test(expected = org.springframework.dao.DuplicateKeyException.class)
-    public void testAddDuplicateUser() throws Exception {
-        LOGGER.debug("test: testAddDuplicateUser()");
-        User duplicateUser = new User(1,"userLogin1duplicate", "userPassword1duplicate", "descr");
-        userDao.addUser(duplicateUser);
-    }
+    /*
+    *@Test(expected = org.springframework.dao.DuplicateKeyException.class)
+    *public void testAddDuplicateUser() throws Exception {
+    *    LOGGER.debug("testAddDuplicateUser()");
+    *    User duplicateUser = new User(1,"userLogin1duplicate", "userPassword1duplicate", "descr");
+    *    userDao.addUser(duplicateUser);
+    *}
+    */
 
     @Test
     public void testUpdateUser() throws Exception {
-        LOGGER.debug("test: updateUser()");
+        LOGGER.debug("testUpdateUser()");
         User user = userDao.getUserById(1);
-        assertNotNull(user);
+        assertNotNull("testUpdateUser: user not received!", user);
         user.setLogin("updated login");
         user.setDescription("updated description");
 
-        assertEquals(1, userDao.updateUser(user));
-        User updatedUser = userDao.getUserById(user.getUserID());
-        assertNotNull(updatedUser);
+        assertTrue("testUpdateUser: count updated rows = 0!",userDao.updateUser(user) > 0);
 
-        assertEquals("User description update result: ", "updated description", updatedUser.getDescription());
-        assertEquals("User login update result: ", "updated login", updatedUser.getLogin());
+        User updatedUser = userDao.getUserById(user.getUserID());
+        assertNotNull("testUpdateUser: user not found!", updatedUser);
+
+        assertEquals("testUpdateUser: users Description not equals!", "updated description", updatedUser.getDescription());
+        assertEquals("testUpdateUser: users Login not equals!", "updated login", updatedUser.getLogin());
     }
 
     @Test
     public void testDeleteUser() throws Exception {
-        LOGGER.debug("test: deleteUser()");
+        LOGGER.debug("testDeleteUser()");
 
         User forDeletingUser = new User();
         int idForDeletingUser = userDao.addUser(forDeletingUser);
-        assertNotNull(idForDeletingUser);
+        assertNotNull("testDeleteUser: idForDeletingUser = null", idForDeletingUser);
 
         int beforeCountUser = userDao.getAllUsers().size();
 
-        assertEquals(1, userDao.deleteUser(idForDeletingUser));
-        assertEquals(beforeCountUser - 1, userDao.getAllUsers().size());
+        assertEquals("testDeleteUser: count deleted rows = 0!",1, userDao.deleteUser(idForDeletingUser));
+        assertEquals("testDeleteUser: count of users before-1 and after does not match!",beforeCountUser - 1, userDao.getAllUsers().size());
     }
 
     @Test
     public void testGetAllUsers() throws Exception {
-        LOGGER.debug("test: getAllUsers()");
-        assertTrue(userDao.getAllUsers().size() > 0);
+        LOGGER.debug("testGetAllUsers()");
+        assertTrue("testGetAllUsers: receive size = 0!",userDao.getAllUsers().size() > 0);
     }
 
     //@Ignore
     @Test
     public void testGetUserById() throws Exception {
-        LOGGER.debug("test: getUserById()");
+        LOGGER.debug("testGetUserById()");
         User user = userDao.getUserById(1);
-        assertNotNull(user);
-        assertEquals("User get result: ", USER_LOGIN_1, user.getLogin());
+        assertNotNull("testGetUserByLogin: user = null", user);
+        assertEquals("testGetUserByLogin: users Login not equals!", USER_LOGIN_1, user.getLogin());
     }
 
     @Test
     public void testGetUserByLogin() throws Exception {
-        LOGGER.debug("test: getUserByLogin()");
+        LOGGER.debug("testGetUserByLogin()");
         User user = userDao.getUserByLogin("userLogin1");
-        assertNotNull(user);
-        assertEquals("User get result: ", USER_LOGIN_1, user.getLogin());
+        assertNotNull("testGetUserByLogin: user = null", user);
+        assertEquals("testGetUserByLogin: users Login not equals!", USER_LOGIN_1, user.getLogin());
     }
 }
