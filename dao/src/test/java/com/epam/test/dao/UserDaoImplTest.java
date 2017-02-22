@@ -17,8 +17,6 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath*:test-spring-dao.xml"})
-// sets the execution order of test
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @Transactional
 
 public class UserDaoImplTest {
