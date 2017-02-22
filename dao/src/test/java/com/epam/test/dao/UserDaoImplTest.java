@@ -3,15 +3,15 @@ package com.epam.test.dao;
 /**
  * test DAO implementation
  */
-import org.junit.FixMethodOrder;
-import org.junit.Test;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.*;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.Assert.*;
 
@@ -19,48 +19,115 @@ import static org.junit.Assert.*;
 @ContextConfiguration(locations = {"classpath*:test-spring-dao.xml"})
 // sets the execution order of test
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@Transactional
 
 public class UserDaoImplTest {
 
-    public static final User testUser = new User(3, "userLogin3","userPassword3","another user");
+    private static final Logger LOGGER = LogManager.getLogger();
+
+    private static final String USER_LOGIN_1 = "userLogin1";
+
+    public static final User newTestUser = new User("userLogin3","userPassword3","another user");
 
     @Autowired
     UserDao userDao;
 
-    @Test
-    public void A_addUserTest() throws Exception {
+    @BeforeClass
+    public static void setUpBeforeClass() throws Exception {
+        LOGGER.error("execute: setUpBeforeClass()");
+    }
 
-        assertEquals("User add result: ", (Integer) 1, userDao.addUser(testUser));
-        assertEquals(userDao.getUserById(testUser.getUserID()),testUser);
+    @AfterClass
+    public static void tearDownAfterClass() throws Exception {
+        LOGGER.error("execute: tearDownAfterClass()");
+    }
+
+
+    @Before
+    public void beforeTest() {
+        LOGGER.error("execute: beforeTest()");
+    }
+
+    @After
+    public void afterTest() {
+        LOGGER.error("execute: afterTest()");
     }
 
     @Test
-    public void B_updateUserTest() throws Exception {
+    public void test_A_addUser() throws Exception {
+        LOGGER.debug("test: addUser()");
+        int beforeCountUser = userDao.getAllUsers().size();
 
-        testUser.setDescription("updated");
-        userDao.updateUser(testUser);
-        assertEquals("User update result: ", "updated", userDao.getUserById(testUser.getUserID()).getDescription());
+        int addedUserId = userDao.addUser(newTestUser);
+        assertNotNull(addedUserId);
+
+        User addedUser = userDao.getUserById(addedUserId);
+        assertNotNull(addedUser);
+
+        assertEquals(addedUser.getLogin(), newTestUser.getLogin());
+        assertEquals(addedUser.getPassword(), newTestUser.getPassword());
+        assertEquals(addedUser.getDescription(), newTestUser.getDescription());
+
+        assertEquals(beforeCountUser + 1, userDao.getAllUsers().size());
+    }
+
+    @Test(expected = org.springframework.dao.DuplicateKeyException.class)
+    public void test_AB_testAddDuplicateUser() throws Exception {
+        LOGGER.debug("test: testAddDuplicateUser()");
+        User duplicateUser = new User(1,"userLogin1duplicate", "userPassword1duplicate", "descr");
+        userDao.addUser(duplicateUser);
     }
 
     @Test
-    public void C_deleteUserTest() throws Exception {
-
-        userDao.deleteUser(testUser.getUserID());
-        assertEquals(2, userDao.getAllUsers().size());
-    }
-
-    @Test
-    public void D_getAllUsersTest() throws Exception {
-
-        List<User> users = userDao.getAllUsers();
-        assertEquals("User get result: ", (Integer)2,  (Integer)users.size());
-    }
-
-    @Test
-    public void E_getUserByIdTest() throws Exception {
-
+    public void test_B_updateUser() throws Exception {
+        LOGGER.debug("test: updateUser()");
         User user = userDao.getUserById(1);
         assertNotNull(user);
-        assertEquals("User get result: ","userLogin1", user.getLogin());
+        user.setLogin("updated login");
+        user.setDescription("updated description");
+
+        assertEquals(1, userDao.updateUser(user));
+        User updatedUser = userDao.getUserById(user.getUserID());
+        assertNotNull(updatedUser);
+
+        assertEquals("User description update result: ", "updated description", updatedUser.getDescription());
+        assertEquals("User login update result: ", "updated login", updatedUser.getLogin());
+    }
+
+    @Test
+    public void test_C_deleteUser() throws Exception {
+        LOGGER.debug("test: deleteUser()");
+
+        User forDeletingUser = new User();
+        int idForDeletingUser = userDao.addUser(forDeletingUser);
+        assertNotNull(idForDeletingUser);
+
+        int beforeCountUser = userDao.getAllUsers().size();
+
+        assertEquals(1, userDao.deleteUser(idForDeletingUser));
+        assertEquals(beforeCountUser - 1, userDao.getAllUsers().size());
+    }
+
+    @Test
+    public void test_D_getAllUsers() throws Exception {
+        LOGGER.debug("test: getAllUsers()");
+        assertTrue(userDao.getAllUsers().size() > 0);
+    }
+
+    //@Ignore
+    @Test
+    public void test_E_getUserById() throws Exception {
+        LOGGER.debug("test: getUserById()");
+        User user = userDao.getUserById(1);
+        assertNotNull(user);
+        assertEquals("User get result: ", USER_LOGIN_1, user.getLogin());
+    }
+
+    @Test
+    public void test_F_getUserByLogin() throws Exception {
+        LOGGER.debug("test: getUserByLogin()");
+        User user = userDao.getUserByLogin("userLogin1");
+        assertNotNull(user);
+        assertEquals("User get result: ", USER_LOGIN_1, user.getLogin());
     }
 }
