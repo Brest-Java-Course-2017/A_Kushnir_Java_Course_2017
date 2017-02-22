@@ -54,7 +54,7 @@ public class UserDaoImplTest {
     }
 
     @Test
-    public void test_A_addUser() throws Exception {
+    public void testAddUser() throws Exception {
         LOGGER.debug("test: addUser()");
         int beforeCountUser = userDao.getAllUsers().size();
 
@@ -72,14 +72,14 @@ public class UserDaoImplTest {
     }
 
     @Test(expected = org.springframework.dao.DuplicateKeyException.class)
-    public void test_AB_testAddDuplicateUser() throws Exception {
+    public void testAddDuplicateUser() throws Exception {
         LOGGER.debug("test: testAddDuplicateUser()");
         User duplicateUser = new User(1,"userLogin1duplicate", "userPassword1duplicate", "descr");
         userDao.addUser(duplicateUser);
     }
 
     @Test
-    public void test_B_updateUser() throws Exception {
+    public void testUpdateUser() throws Exception {
         LOGGER.debug("test: updateUser()");
         User user = userDao.getUserById(1);
         assertNotNull(user);
@@ -95,7 +95,7 @@ public class UserDaoImplTest {
     }
 
     @Test
-    public void test_C_deleteUser() throws Exception {
+    public void testDeleteUser() throws Exception {
         LOGGER.debug("test: deleteUser()");
 
         User forDeletingUser = new User();
@@ -109,14 +109,14 @@ public class UserDaoImplTest {
     }
 
     @Test
-    public void test_D_getAllUsers() throws Exception {
+    public void testGetAllUsers() throws Exception {
         LOGGER.debug("test: getAllUsers()");
         assertTrue(userDao.getAllUsers().size() > 0);
     }
 
     //@Ignore
     @Test
-    public void test_E_getUserById() throws Exception {
+    public void testGetUserById() throws Exception {
         LOGGER.debug("test: getUserById()");
         User user = userDao.getUserById(1);
         assertNotNull(user);
@@ -124,7 +124,7 @@ public class UserDaoImplTest {
     }
 
     @Test
-    public void test_F_getUserByLogin() throws Exception {
+    public void testGetUserByLogin() throws Exception {
         LOGGER.debug("test: getUserByLogin()");
         User user = userDao.getUserByLogin("userLogin1");
         assertNotNull(user);
