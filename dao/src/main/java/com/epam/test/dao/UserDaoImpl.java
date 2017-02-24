@@ -92,7 +92,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public int updateUser(User user) throws DataAccessException {
-        LOGGER.debug("updateUser(): ", user);
+        LOGGER.debug("updateUser(user): login = {}", user);
         MapSqlParameterSource parameterSource = new MapSqlParameterSource();
         parameterSource.addValue("p_user_id", user.getUserID());
         parameterSource.addValue("p_user_login", user.getLogin());
@@ -103,7 +103,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public int deleteUser(Integer userId) throws DataAccessException {
-        LOGGER.debug("deleteUser with id = {}", userId);
+        LOGGER.debug("deleteUser(user): id = {}", userId);
         SqlParameterSource parameterSource = new MapSqlParameterSource("p_user_id", userId);
         return namedParameterJdbcTemplate.update(deleteUserQuery, parameterSource);
     }
