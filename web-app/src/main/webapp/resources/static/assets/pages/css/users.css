@@ -1,0 +1,20 @@
+.b-popup{
+    width:100%;
+    min-height:100%;
+    background-color: rgba(255,255,255,0.5);
+    overflow:hidden;
+    position:fixed;
+    top:0px;
+    z-index: 9999;
+}
+
+.b-popup .b-popup-content{
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-top-right-radius: 0.25rem;
+    border-top-left-radius: 0.25rem;
+    position: absolute;
+    top: 25%;
+    left: 25%;
+    padding: 20px;
+}
