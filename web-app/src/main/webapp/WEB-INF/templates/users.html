@@ -8,7 +8,7 @@
 
     <title>User-managment</title>
 
-    <link rel="stylesheet" href="../../resources/static/assets/material-design-icons/material-design-icons.css" type="text/css"/>
+    <link href="../../resources/static/assets/material-design-icons/material-design-icons.css" type="text/css" rel="stylesheet"/>
 
     <link href="../../resources/static/assets/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
 
@@ -17,42 +17,41 @@
 </head>
 <body>
 <div class="container-fluid">
-    <div class="b-popup" id="popup">
-        <div class="b-popup-content" id="popupconrtent">
-            <img src="../../resources/static/assets/img/pbar.gif" alt="clock">
-        </div>
-    </div>
 
     <nav class="navbar navbar-toggleable-sm navbar-inverse fixed-top bg-inverse">
         <a class="navbar-brand" href="/">
             <span class="hidden-folded inline">Home</span>
         </a>
-
-        <a class="navbar-brand" href="/users">
-            <span class="hidden-folded inline">Users</span>
-        </a>
     </nav>
 
-        <div class="container" style="margin-top: 80px;">
+        <div class="container" id="contentcontainer">
             <h1>Users</h1>
-            <div class="col-12" id="user-list-cont">
-                <div class="list group" id="user-list">
-                    <div class="list-group-item b-l b-l-2x" role="button"
-                         th:if="${usersList != null}"
-                         th:each="item : ${usersList}"
-                         th:id="'user_' + ${item.userID}"
-                         th:onclick="'editUser(' + ${item.userID} + ')'">
-                        <div class="list-body">
-                            <div>
-                                <b th:text="${item.login}">User 1</b>
-                            </div>
-                            <div class="text-ellipsis text-muted text-sm" th:text="${item.description}">
-                                Sample description for specified user number 1
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
+            <button type="button" class="btn"
+                    th:onclick="'addUser()'">Add new User</button>
+
+            <table class="table table-condensed">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>LOGIN</th>
+                        <th>PASSWORD</th>
+                        <th>DESCRIPTION</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:if="${usersList != null}"
+                        th:each="item : ${usersList}"
+                        th:id="'user_' + ${item.userID}"
+                        th:onclick="'editUser(' + ${item.userID} + ')'">
+                            <td th:text="${item.userID}">ID</td>
+                            <td th:text="${item.login}">login</td>
+                            <td th:text="${item.password}">password</td>
+                            <td th:text="${item.description}">description</td>
+                    </tr>
+                </tbody>
+            </table>
+
         </div>
 
     <div class="footer" style="margin-top: 20px;">
@@ -60,6 +59,7 @@
     </div>
 
 </div>
+
     <!-- SCRIPTS -->
     <script src="../../resources/static/assets/js/jquery/jquery-3.1.1.min.js"></script>
     <script src="../../resources/static/assets/js/tether.min.js"></script>

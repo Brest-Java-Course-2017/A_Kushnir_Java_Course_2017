@@ -1,20 +1,23 @@
-.b-popup{
-    width:100%;
-    min-height:100%;
-    background-color: rgba(255,255,255,0.5);
-    overflow:hidden;
-    position:fixed;
-    top:0px;
-    z-index: 9999;
+.container {
+    padding-top: 60px;
 }
 
-.b-popup .b-popup-content{
-    background-color: #fff;
-    border: 1px solid rgba(0, 0, 0, 0.125);
-    border-top-right-radius: 0.25rem;
-    border-top-left-radius: 0.25rem;
-    position: absolute;
-    top: 25%;
-    left: 25%;
-    padding: 20px;
+tbody tr {
+    font-weight: normal;
+    text-shadow: #fff 0 1px 0px;
+    background-color: #f4f4f4;
+}
+
+tbody tr:nth-child(2n) {
+    background-color: #eaeaea;
+}
+
+th {
+    background-color: #656565;
+    font-weight: normal;
+    font-size: 15px;
+    padding: 0 10px;
+    color: #fff;
+    text-shadow: #414141 0 1px 0px;
+    line-height: 40px;
 }

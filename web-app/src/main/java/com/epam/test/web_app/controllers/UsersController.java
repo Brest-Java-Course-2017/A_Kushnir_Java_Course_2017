@@ -7,10 +7,8 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -44,5 +42,44 @@ public class UsersController {
         User user = userService.getUserById(id);
         model.addAttribute("user", user);
         return "user";
+    }
+
+    @GetMapping(value = "/adduser")
+    public String createUser() {
+        LOGGER.debug("/adduser page");
+        return "adduser";
+    }
+
+    @PostMapping(value = "/adduserconfirm")
+    public String ConfirmCreateUser(@RequestParam("userlogin") String login,
+                                    @RequestParam("userpassword") String password,
+                                    @RequestParam("userdescription") String description) {
+        LOGGER.debug("/ConfirmCreateUser()");
+        userService.addUser(new User(login, password, description));
+        return "redirect:users";
+    }
+
+    @PostMapping(value = "/updateuser")
+    public String updateUser(@RequestParam("userid") Integer id,
+                                  @RequestParam("userlogin") String login,
+                                  @RequestParam("userpassword") String password,
+                                  @RequestParam("userdescription") String description) {
+        LOGGER.debug("/updateUser()",id);
+        User user = userService.getUserById(id);
+
+        user.setLogin(login);
+        user.setPassword(password);
+        user.setDescription(description);
+        userService.updateUser(user);
+
+        return "redirect:users";
+    }
+
+    // TODO: fix delete
+    @DeleteMapping(value = "/deleteuser")
+    public String deleteUser (@RequestParam("id") Integer id) {
+        LOGGER.debug("/deleteUser(id: {})",id);
+        userService.deleteUser(id);
+        return "redirect:users";
     }
 }

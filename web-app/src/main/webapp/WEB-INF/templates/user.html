@@ -1,25 +1,33 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <body>
-    <div class="row">
-        <form role="form"
-              th:with="item = ${user}"
-              th:object="${item}">
+    <div class="row-fluid"
+         th:with="item = ${user}"
+         th:object="${item}">
+
+        <h1 th:text=" ${item.login + ' edit'}">User edit</h1>
+
+        <form role="form" action="/updateuser" method="post">
 
             <div class="form-group row">
                 <div class="col-12">
-                    <input class="form-control" id="inputLogin" placeholder="Login" value="User 1" required="true" autofocus="" type="text"
+                    <input name="userid" type="hidden"
+                           th:value=" ${item.userID}"/>
+                    <input name="userlogin" class="form-control" id="inputLogin" placeholder="Login" value="User Login" required="true" autofocus="" type="text"
                            th:value=" ${item.login}"/>
-                    <input class="form-control" id="inputPassword" placeholder="Password" value="User 1 pass" required="true" autofocus="" type="text"
+                    <input name="userpassword" class="form-control" id="inputPassword" placeholder="Password" value="User pass" required="true" autofocus="" type="text"
                            th:value=" ${item.password}"/>
-                    <input class="form-control" id="inputDescription" placeholder="Description" value="User 1 description" required="true" autofocus="" type="text"
+                    <input name="userdescription" class="form-control" id="inputDescription" placeholder="Description" value="User description" required="true" autofocus="" type="text"
                            th:value=" ${item.description}"/>
                 </div>
             </div>
-            <div style="width: 100%; display: inline-block; text-align: center;">
-                <input th:onclick="'addUser(' + ${item.userID} + ')'" class="button" type="submit" value="Edit">
-                <input th:onclick="'closePopup()'" class="button" type="button" value="Close"/>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Accept</button>
+                <!-- TODO: fix delete -->
+                <button type="button" th:onclick="'deleteUser(' + ${item.userID} + ')'" class="btn btn-danger">Delete</button>
+                <button type="button" th:onclick="'cancelEditUser()'" class="btn">Cancel</button>
             </div>
         </form>
     </div>
+
 </body>

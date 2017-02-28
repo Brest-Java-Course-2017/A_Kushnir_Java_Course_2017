@@ -1,15 +1,3 @@
-$(document).ready(function(){
-        PopUpHide();
-    }
-);
-
-function PopUpShow(){
-    $("#popup").show();
-}
-
-function PopUpHide(){
-    $("#popup").hide();
-}
 
 function editUser(id) {
     $.ajax(
@@ -18,8 +6,7 @@ function editUser(id) {
             data: {"id": id},
             dataType: 'html',
             success: function (response) {
-                PopUpShow();
-                $('#popupconrtent').html(response);
+                $('#contentcontainer').html(response);
             },
             error: function (response) {
                 console.error(response);
@@ -30,12 +17,36 @@ function editUser(id) {
     return false;
 }
 
-function confirmEdit (user) {
+function addUser() {
+    $.ajax(
+        {
+            url: '/adduser',
+            dataType: 'html',
+            success: function (response) {
+                $('#contentcontainer').html(response);
+            },
+            error: function (response) {
+                console.error(response);
+                alert('server error!');
+            }
+        }
+    );
+    return false;
 }
 
-function closePopup() {
-    PopUpHide();
-    $('#popupconrtent').html('<img src="../../resources/static/assets/img/pbar.gif" alt="clock">');
+// TODO: fix delete
+function deleteUser(id) {
+    $.ajax(
+        {
+            url: '/deleteuser',
+            type: 'DELETE',
+            data: {"id": id}
+        }
+    );
+}
+
+function cancelEditUser () {
+    window.location = "/users";
 }
 
 
