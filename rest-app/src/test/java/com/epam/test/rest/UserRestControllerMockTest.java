@@ -3,6 +3,8 @@ package com.epam.test.rest;
 import com.epam.test.dao.User;
 import com.epam.test.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,7 +35,6 @@ public class UserRestControllerMockTest {
 
     @Resource
     private UserRestController userController;
-
     private MockMvc mockMvc;
 
     @Autowired
@@ -77,7 +78,7 @@ public class UserRestControllerMockTest {
                 get("/user/1")
                         .accept(MediaType.APPLICATION_JSON)
         ).andDo(print())
-                .andExpect(status().isCreated())
+                .andExpect(status().isFound())
                 .andExpect(content()
                         .string("{\"userID\":1,\"login\":\"l\",\"password\":\"p\",\"description\":\"d\"}"));
     }
@@ -107,9 +108,14 @@ public class UserRestControllerMockTest {
                 .andReturn(1);
         replay(userService);
 
+        String user = new ObjectMapper()
+                .writeValueAsString(new User(1,"l", "p", "d"));
+
         mockMvc.perform(
-                put("/user/2/newLogin2/newPassword2/newDesc2")
+                put("/user")
                         .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(user)
         ).andDo(print())
                 .andExpect(status().isAccepted())
                 .andExpect(content().string(""));

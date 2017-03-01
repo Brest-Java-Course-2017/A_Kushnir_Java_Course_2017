@@ -11,8 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * Created by kushnir on 26.2.17.
+ * Rest User Controller
  */
+@CrossOrigin
 @RestController
 public class UserRestController {
 
@@ -20,6 +21,12 @@ public class UserRestController {
 
     @Autowired
     private UserService userService;
+
+    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
+    @ExceptionHandler({IllegalArgumentException.class})
+    public String incorrectDataError() {
+        return "{  \"response\" : \"Incorrect Data Error\" }";
+    }
 
     //curl -X GET -v localhost:8088/users
     @RequestMapping(value = "/users", method = RequestMethod.GET)
@@ -31,21 +38,18 @@ public class UserRestController {
 
     //curl -X GET -v localhost:8088/user/1
     @RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.FOUND)
     public @ResponseBody User getUser(@PathVariable(value = "id") Integer id) {
         LOGGER.debug("/user.getUser(id: {}) rest",id);
         return userService.getUserById(id);
     }
 
-    //curl -X PUT -v localhost:8088/user/2/l1/p1/d1
-    @RequestMapping(value = "/user/{id}/{login}/{password}/{desc}", method = RequestMethod.PUT)
+    //curl -X PUT -v localhost:8088/user -d '{"userID":"1","newlogin":"xyz","newpassword":"xyz","description":"new description"}'
+    @RequestMapping(value = "/user", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public void updateUser(@PathVariable(value = "id") int id,
-                           @PathVariable(value = "desc") String desc,
-                           @PathVariable(value = "login") String login,
-                           @PathVariable(value = "password") String password) {
-        LOGGER.debug("/user.updateUser(id: {})", id);
-        userService.updateUser(new User(id, login, password, desc));
+    public void updateUser(@RequestBody User user) {
+        LOGGER.debug("/user.updateUser(id: {})", user.getUserID());
+        userService.updateUser(user);
     }
 
     //curl -H "Content-Type: application/json" -X POST -d '{"login":"xyz","password":"xyz"}' -v localhost:8088/user
