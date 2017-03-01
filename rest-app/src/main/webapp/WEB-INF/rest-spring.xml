@@ -20,7 +20,7 @@
         <property name="locations">
             <list>
                 <value>classpath*:queries.properties</value>
-                <value>classpath*:datebase.properties</value>
+                <value>classpath*:database.properties</value>
             </list>
         </property>
     </bean>
@@ -57,9 +57,9 @@
         </property>
     </bean>
 
-    <bean id="jsonConverter" class="org.springframework.http.json.MappingJackson2HttpMessageConvertor">
-        <property name="supportMediaTypes" value="application/json"/>
-        <property name="prettyPrint" value="true"/>
+    <bean id="jsonConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+        <property name="supportedMediaTypes" value="application/json" />
+        <property name="prettyPrint" value="true" />
     </bean>
 
 </beans>

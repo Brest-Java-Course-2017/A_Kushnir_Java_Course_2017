@@ -16,7 +16,8 @@ public class VersionController {
 
     private static final String VERSION = "1.0";
 
-    @RequestMapping(value = "/version", method = RequestMethod.GET)
+    //curl -X GET -v localhost:8088/v
+    @RequestMapping(value = "/v", method = RequestMethod.GET)
     public String getVersion() {
         LOGGER.debug("/version rest");
         return VERSION;

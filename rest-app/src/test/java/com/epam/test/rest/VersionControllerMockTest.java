@@ -38,7 +38,7 @@ public class VersionControllerMockTest {
     @Test
     public void getVersionTest() throws Exception {
         mockMvc.perform(
-                get("/version")
+                get("/v")
                         .accept(MediaType.APPLICATION_JSON)
         ).andDo(print())
                 .andExpect(status().isOk())
