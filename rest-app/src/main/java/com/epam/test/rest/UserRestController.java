@@ -31,7 +31,7 @@ public class UserRestController {
     //curl -X GET -v localhost:8088/users
     @RequestMapping(value = "/users", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public @ResponseBody List<User> getUsers() {
+    public @ResponseBody List<User> getAllUsers() {
         LOGGER.debug("/users.getUsers() rest");
         return userService.getAllUsers();
     }
@@ -39,9 +39,17 @@ public class UserRestController {
     //curl -X GET -v localhost:8088/user/1
     @RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.FOUND)
-    public @ResponseBody User getUser(@PathVariable(value = "id") Integer id) {
+    public @ResponseBody User getUserById(@PathVariable(value = "id") Integer id) {
         LOGGER.debug("/user.getUser(id: {}) rest",id);
         return userService.getUserById(id);
+    }
+
+    //curl -X GET -v localhost:8088/user/login/{login}
+    @RequestMapping(value = "/user/login/{login}", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.FOUND)
+    public @ResponseBody User getUserById(@PathVariable(value = "login") String login) {
+        LOGGER.debug("/user.getUser(login: {}) rest", login);
+        return userService.getUserByLogin(login);
     }
 
     //curl -X PUT -v localhost:8088/user -d '{"userID":"1","newlogin":"xyz","newpassword":"xyz","description":"new description"}'

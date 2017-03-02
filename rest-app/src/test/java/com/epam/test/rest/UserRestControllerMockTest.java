@@ -84,6 +84,21 @@ public class UserRestControllerMockTest {
     }
 
     @Test
+    public void getUserByLoginTest() throws Exception {
+        expect(userService.getUserByLogin(anyString()))
+                .andReturn(new User(1,"l", "p", "d"));
+        replay(userService);
+
+        mockMvc.perform(
+                get("/user/login/userLogin1")
+                        .accept(MediaType.APPLICATION_JSON)
+        ).andDo(print())
+                .andExpect(status().isFound())
+                .andExpect(content()
+                        .string("{\"userID\":1,\"login\":\"l\",\"password\":\"p\",\"description\":\"d\"}"));
+    }
+
+    @Test
     public void addUserTest() throws Exception {
         expect(userService.addUser(anyObject(User.class)))
                 .andReturn(3);

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<body>
+<div class="row-fluid">
+
+    <h1>Add new User</h1>
+
+    <form role="form" action="/adduserconfirm" method="post">
+        <div class="form-group row">
+            <div class="col-12">
+                <input name="userlogin" class="form-control" id="inputLogin" placeholder="Login" required="true" type="text"/>
+                <input name="userpassword" class="form-control" id="inputPassword" placeholder="Password" required="true" type="text"/>
+                <input name="userdescription" class="form-control" id="inputDescription" placeholder="Description" required="true" type="text"/>
+            </div>
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Add new User</button>
+            <button th:onclick="'cancelEditUser()'" type="button" class="btn">Cancel</button>
+        </div>
+    </form>
+</div>
+
+</body>
