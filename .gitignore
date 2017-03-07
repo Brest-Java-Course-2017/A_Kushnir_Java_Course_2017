@@ -41,6 +41,6 @@ com_crashlytics_export_strings.xml
 # other ----------------------
 homework/
 *.odt
-.project
+*.project
 *.screen
 */Wireframe/
