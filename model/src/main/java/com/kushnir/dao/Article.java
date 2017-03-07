@@ -1,4 +1,4 @@
-package com.kushnir.model;
+package com.kushnir.dao;
 
 import java.time.LocalDate;
 import java.util.Objects;
