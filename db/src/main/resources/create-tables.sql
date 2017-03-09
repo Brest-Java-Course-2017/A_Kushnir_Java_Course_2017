@@ -12,7 +12,7 @@ CREATE TABLE articles (
     id_article      INT              NOT NULL AUTO_INCREMENT,
     naim            VARCHAR(150)     NOT NULL,
     create_date     DATE             NOT NULL,
-    pupularity      INT              NOT NULL,
+    popularity      INT              NOT NULL,
     id_journalist   INT              NOT NULL,
     PRIMARY KEY (id_article),
     FOREIGN KEY (id_journalist) REFERENCES journalists (id_journalist)
