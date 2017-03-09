@@ -1,4 +1,4 @@
-package com.kushnir.dao;
+package com.kushnir.model;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -17,6 +17,13 @@ public class Journalist {
     }
 
     public Journalist(String name, Integer rate, LocalDate birthDate) {
+        this.name = name;
+        this.rate = rate;
+        this.birthDate = birthDate;
+    }
+
+    public Journalist(Integer id, String name, Integer rate, LocalDate birthDate) {
+        this.id = id;
         this.name = name;
         this.rate = rate;
         this.birthDate = birthDate;
