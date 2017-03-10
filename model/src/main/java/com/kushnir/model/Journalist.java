@@ -12,6 +12,7 @@ public class Journalist {
     private String      name;
     private Integer     rate;
     private LocalDate   birthDate;
+    private Integer     countArticles;
 
     public Journalist() {
     }
@@ -29,6 +30,14 @@ public class Journalist {
         this.birthDate = birthDate;
     }
 
+    public Journalist(Integer id, String name, Integer rate, LocalDate birthDate, Integer countArticles) {
+        this.id = id;
+        this.name = name;
+        this.rate = rate;
+        this.birthDate = birthDate;
+        this.countArticles = countArticles;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -43,6 +52,10 @@ public class Journalist {
 
     public LocalDate getBirthDate() {
         return birthDate;
+    }
+
+    public Integer getCountArticles() {
+        return countArticles;
     }
 
     public void setId(Integer id) {
@@ -62,8 +75,8 @@ public class Journalist {
     }
 
     /*
-    * This method set birthDate from string in format: "YYYY-MM-DD"
-    */
+        * This method set birthDate from string in format: "YYYY-MM-DD"
+        */
     public void setBirthDateFromString(String birthDate) {
         this.birthDate = LocalDate.parse(birthDate);
     }
@@ -87,10 +100,11 @@ public class Journalist {
     @Override
     public String toString() {
         return "Journalist{" +
-                "id = " + id +
-                ", name = '" + name + '\'' +
-                ", rate = " + rate +
-                ", birthDate = " + birthDate +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", rate=" + rate +
+                ", birthDate=" + birthDate +
+                ", countArticles=" + countArticles +
                 '}';
     }
 }
