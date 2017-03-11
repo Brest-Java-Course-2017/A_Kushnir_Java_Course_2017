@@ -12,7 +12,6 @@ public class Journalist {
     private String      name;
     private Integer     rate;
     private LocalDate   birthDate;
-    private Integer     countArticles;
 
     public Journalist() {
     }
@@ -30,14 +29,6 @@ public class Journalist {
         this.birthDate = birthDate;
     }
 
-    public Journalist(Integer id, String name, Integer rate, LocalDate birthDate, Integer countArticles) {
-        this.id = id;
-        this.name = name;
-        this.rate = rate;
-        this.birthDate = birthDate;
-        this.countArticles = countArticles;
-    }
-
     public Integer getId() {
         return id;
     }
@@ -52,10 +43,6 @@ public class Journalist {
 
     public LocalDate getBirthDate() {
         return birthDate;
-    }
-
-    public Integer getCountArticles() {
-        return countArticles;
     }
 
     public void setId(Integer id) {
@@ -104,7 +91,6 @@ public class Journalist {
                 ", name='" + name + '\'' +
                 ", rate=" + rate +
                 ", birthDate=" + birthDate +
-                ", countArticles=" + countArticles +
                 '}';
     }
 }

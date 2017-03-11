@@ -24,6 +24,14 @@ public class Article {
         this.journalistId = journalistId;
     }
 
+    public Article(Integer id, String name, LocalDate dateCreate, Integer popularity, Integer journalistId) {
+        this.id = id;
+        this.name = name;
+        this.dateCreate = dateCreate;
+        this.popularity = popularity;
+        this.journalistId = journalistId;
+    }
+
     public Integer getId() {
         return id;
     }
