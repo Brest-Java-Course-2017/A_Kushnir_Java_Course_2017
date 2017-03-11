@@ -5,7 +5,6 @@ import org.springframework.dao.DataAccessException;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Journalist DAO interface
@@ -26,12 +25,22 @@ public interface JournalistDao {
     /**
      * Get journalist from database by id.
      *
-     * @param id Journalist
+     * @param id of Journalist
      * @return journalist
      * @returnType Journalist
      * @throws DataAccessException
      */
     Journalist getJournalistById(Integer id) throws DataAccessException;
+
+    /**
+     * Get journalist from database by name.
+     *
+     * @param name of Journalist
+     * @return journalist
+     * @returnType Journalist
+     * @throws DataAccessException
+     */
+    Journalist getJournalistByName(String name) throws DataAccessException;
 
     /**
      * Add journalist to the database.

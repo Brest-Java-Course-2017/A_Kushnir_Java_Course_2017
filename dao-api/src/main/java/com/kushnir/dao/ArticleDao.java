@@ -23,6 +23,17 @@ public interface ArticleDao {
     List<Article> getAllArticles(LocalDate createDateStart, LocalDate createDateEnd) throws DataAccessException;
 
     /**
+     * Get all articles from database with Journalist name.
+     *
+     * @param createDateStart
+     * @param createDateEnd
+     * @return ??
+     * @returnType ??
+     * @throws DataAccessException
+     */
+    // TODO List getAllArticlesWithDetails method
+
+    /**
      * Get article from database by id.
      *
      * @param id Article
@@ -31,6 +42,16 @@ public interface ArticleDao {
      * @throws DataAccessException
      */
     Article getArticleById(Integer id) throws DataAccessException;
+
+    /**
+     * Get article from database by naim.
+     *
+     * @param naim Article
+     * @return Article
+     * @returnType Article
+     * @throws DataAccessException
+     */
+    Article getArticleByNaim(String naim) throws DataAccessException;
 
     /**
      * Add article to the database.
