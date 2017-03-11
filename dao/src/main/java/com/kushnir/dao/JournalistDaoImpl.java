@@ -4,7 +4,6 @@ import com.kushnir.model.Journalist;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
-//import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -23,18 +22,19 @@ import java.util.List;
  */
 public class JournalistDaoImpl implements JournalistDao {
 
-    static final String JOURNALIST_ID_FIELDNAME = "id_journalist";
-    static final String JOURNALIST_NAME_FIELDNAME = "name_journalist";
-    static final String JOURNALIST_BIRTHDATE_FIELDNAME = "birth_date";
-    static final String JOURNALIST_RATING_FIELDNAME = "rating";
-    static final String JOURNALIST_COUNTOFARTICLES_FIELDNAME = "countArticles";
+    static final String ID_FIELDNAME = "id_journalist";
+    static final String NAME_FIELDNAME = "name_journalist";
+    static final String BIRTHDATE_FIELDNAME = "birth_date";
+    static final String RATING_FIELDNAME = "rating";
 
-    static final String JOURNALIST_ID_PARAMETERNAME = "p_id_j";
-    static final String JOURNALIST_NAME_PARAMETERNAME = "p_name";
-    static final String JOURNALIST_BIRTHDAY_PARAMETERNAME = "p_birth_date";
-    static final String JOURNALIST_RATING_PARAMETERNAME = "p_rating";
+    static final String ID_PARAMETERNAME = "p_id_j";
+    static final String NAME_PARAMETERNAME = "p_name";
+    static final String BIRTHDAY_PARAMETERNAME = "p_birth_date";
+    static final String RATING_PARAMETERNAME = "p_rating";
 
-    //private JdbcTemplate jdbcTemplate;
+    static final String BIRTHDAY_START_PARAMETERNAME = "p_birthDateStart";
+    static final String BIRTHDAY_END_PARAMETERNAME = "p_birthDateEnd";
+
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Value("${journalist.selectAll}")
@@ -42,6 +42,9 @@ public class JournalistDaoImpl implements JournalistDao {
 
     @Value("${journalist.selectById}")
     String getJournalistByIdSqlQuery;
+
+    @Value("${journalist.selectByName}")
+    String getJournalistByNameSqlQuery;
 
     @Value("${journalist.insert}")
     String addJournalistSqlQuery;
@@ -53,31 +56,45 @@ public class JournalistDaoImpl implements JournalistDao {
     String deleteJournalistSqlQuery;
 
     public JournalistDaoImpl(DataSource dataSource) {
-        //jdbcTemplate = new JdbcTemplate(dataSource);
         namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
 
     @Override
     public List<Journalist> getAllJournalists(LocalDate birthDateStart, LocalDate birthDateEnd) throws DataAccessException {
         MapSqlParameterSource parameterSource = new MapSqlParameterSource();
-        parameterSource.addValue("p_birthDateStart", birthDateStart);
-        parameterSource.addValue("p_birthDateEnd", birthDateEnd);
-        return namedParameterJdbcTemplate.query(getAllJournalistsSqlquery, parameterSource ,new JournalistsRowMapper());
+        parameterSource.addValue(BIRTHDAY_START_PARAMETERNAME, birthDateStart);
+        parameterSource.addValue(BIRTHDAY_END_PARAMETERNAME, birthDateEnd);
+        List<Journalist> journalistList = namedParameterJdbcTemplate.query(getAllJournalistsSqlquery
+                ,parameterSource
+                ,new JournalistsRowMapper());
+        return journalistList;
     }
 
     @Override
     public Journalist getJournalistById(Integer id) throws DataAccessException {
-        SqlParameterSource namedParameters = new MapSqlParameterSource(JOURNALIST_ID_PARAMETERNAME, id);
-        return namedParameterJdbcTemplate.queryForObject(getJournalistByIdSqlQuery, namedParameters, new JournalistsRowMapper());
+        SqlParameterSource namedParameters = new MapSqlParameterSource(ID_PARAMETERNAME, id);
+        Journalist journalist = namedParameterJdbcTemplate.queryForObject(getJournalistByIdSqlQuery
+                    ,namedParameters
+                    ,new JournalistsRowMapper());
+        return journalist;
+    }
+
+    @Override
+    public Journalist getJournalistByName(String name) throws DataAccessException {
+        SqlParameterSource namedParameters = new MapSqlParameterSource(NAME_PARAMETERNAME, name);
+        Journalist journalist = namedParameterJdbcTemplate.queryForObject(getJournalistByNameSqlQuery
+                    ,namedParameters
+                    ,new JournalistsRowMapper());
+        return journalist;
     }
 
     @Override
     public Integer addJournalist(Journalist journalist) throws DataAccessException {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         MapSqlParameterSource parameterSource = new MapSqlParameterSource();
-        parameterSource.addValue(JOURNALIST_NAME_PARAMETERNAME, journalist.getName());
-        parameterSource.addValue(JOURNALIST_BIRTHDAY_PARAMETERNAME, journalist.getBirthDate());
-        parameterSource.addValue(JOURNALIST_RATING_PARAMETERNAME, journalist.getRate());
+        parameterSource.addValue(NAME_PARAMETERNAME, journalist.getName());
+        parameterSource.addValue(BIRTHDAY_PARAMETERNAME, journalist.getBirthDate());
+        parameterSource.addValue(RATING_PARAMETERNAME, journalist.getRate());
         namedParameterJdbcTemplate.update(addJournalistSqlQuery, parameterSource, keyHolder);
         return keyHolder.getKey().intValue();
     }
@@ -85,17 +102,17 @@ public class JournalistDaoImpl implements JournalistDao {
     @Override
     public Integer updateJournalist(Journalist journalist) throws DataAccessException {
         MapSqlParameterSource parameterSource = new MapSqlParameterSource();
-        parameterSource.addValue(JOURNALIST_ID_PARAMETERNAME, journalist.getId());
-        parameterSource.addValue(JOURNALIST_NAME_PARAMETERNAME, journalist.getName());
-        parameterSource.addValue(JOURNALIST_BIRTHDAY_PARAMETERNAME, journalist.getBirthDate());
-        parameterSource.addValue(JOURNALIST_RATING_PARAMETERNAME, journalist.getRate());
+        parameterSource.addValue(ID_PARAMETERNAME, journalist.getId());
+        parameterSource.addValue(NAME_PARAMETERNAME, journalist.getName());
+        parameterSource.addValue(BIRTHDAY_PARAMETERNAME, journalist.getBirthDate());
+        parameterSource.addValue(RATING_PARAMETERNAME, journalist.getRate());
         return namedParameterJdbcTemplate.update(updateJournalistSqlQuery, parameterSource);
     }
 
     @Override
     public Integer deleteJournalist(Integer id) throws DataAccessException {
         MapSqlParameterSource parameterSource = new MapSqlParameterSource();
-        parameterSource.addValue(JOURNALIST_ID_PARAMETERNAME, id);
+        parameterSource.addValue(ID_PARAMETERNAME, id);
         return namedParameterJdbcTemplate.update(deleteJournalistSqlQuery, parameterSource);
     }
 
@@ -104,11 +121,10 @@ public class JournalistDaoImpl implements JournalistDao {
         @Override
         public Journalist mapRow(ResultSet resultSet, int i) throws SQLException {
             Journalist journalist = new Journalist(
-                    resultSet.getInt(JOURNALIST_ID_FIELDNAME),
-                    resultSet.getString(JOURNALIST_NAME_FIELDNAME),
-                    resultSet.getInt(JOURNALIST_RATING_FIELDNAME),
-                    resultSet.getDate(JOURNALIST_BIRTHDATE_FIELDNAME).toLocalDate(),
-                    resultSet.getInt(JOURNALIST_COUNTOFARTICLES_FIELDNAME));
+                    resultSet.getInt(ID_FIELDNAME),
+                    resultSet.getString(NAME_FIELDNAME),
+                    resultSet.getInt(RATING_FIELDNAME),
+                    resultSet.getDate(BIRTHDATE_FIELDNAME).toLocalDate());
             return journalist;
         }
     }
