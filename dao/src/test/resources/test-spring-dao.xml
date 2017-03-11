@@ -19,8 +19,9 @@
         <constructor-arg ref="dataSource"/>
     </bean>
 
-    <bean id="ArticleDao" class="com.kushnir.dao.ArticleDaoImpl">
+    <!-- <bean id="ArticleDao" class="com.kushnir.dao.ArticleDaoImpl">
         <constructor-arg ref="dataSource"/>
     </bean>
+    -->
 
 </beans>
