@@ -46,6 +46,13 @@ public class TestJournalistDaoImpl {
     }
 
     @Test
+    public void getJournalistViewPageTest() throws Exception {
+        Journalist.JournalistViewPage journalistViewPageData = journalistDao.getDataJournalistViewPage(null,null);
+        assertNotNull(journalistViewPageData);
+        System.out.print(journalistViewPageData);
+    }
+
+    @Test
     public void getJournalistByIdTest() throws Exception {
         Journalist journalist = journalistDao.getJournalistById(JOURNALIST_WITH_ID_1.getId());
         assertNotNull(journalist);
@@ -53,7 +60,7 @@ public class TestJournalistDaoImpl {
     }
 
     @Test
-    public void getJournalistByNameTest () throws Exception {
+    public void getJournalistByNameTest() throws Exception {
         Journalist journalist = journalistDao.getJournalistByName(JOURNALIST_WITH_ID_1.getName());
         assertNotNull(journalist);
         assertTrue(journalist.equals(JOURNALIST_WITH_ID_1));
@@ -87,17 +94,16 @@ public class TestJournalistDaoImpl {
     public void deleteJournalistTest() {
         int newJournalistId = journalistDao.addJournalist(JOURNALIST_NEW);
         assertNotNull(newJournalistId);
-
         int countJournalistsBefore = (journalistDao.getAllJournalists(null, null)).size();
-
-        journalistDao.deleteJournalist(newJournalistId);
+        assertTrue(journalistDao.deleteJournalist(newJournalistId) == 1);
         int countJournalistsAfter = journalistDao.getAllJournalists(null,null).size();
-
         assertTrue(countJournalistsBefore > countJournalistsAfter);
+
         try {
             assertNull(journalistDao.getJournalistById(newJournalistId));
         } catch (EmptyResultDataAccessException e) {
 
         }
     }
+
 }

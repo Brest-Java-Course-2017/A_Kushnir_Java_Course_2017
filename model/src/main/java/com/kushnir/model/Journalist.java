@@ -1,6 +1,8 @@
 package com.kushnir.model;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -92,5 +94,43 @@ public class Journalist {
                 ", rate=" + rate +
                 ", birthDate=" + birthDate +
                 '}';
+    }
+
+    // container for Journalists Page print
+    public static class JournalistViewPage {
+        private List<Journalist> journalists;
+        private Map<String, Integer> aggregativeParam;
+
+        public JournalistViewPage() {
+        }
+
+        public JournalistViewPage(List<Journalist> journalists, Map<String, Integer> aggregativeParam) {
+            this.journalists = journalists;
+            this.aggregativeParam = aggregativeParam;
+        }
+
+        public List<Journalist> getJournalists() {
+            return journalists;
+        }
+
+        public Map<String, Integer> getAggregativeParam() {
+            return aggregativeParam;
+        }
+
+        public void setJournalists(List<Journalist> journalists) {
+            this.journalists = journalists;
+        }
+
+        public void setAggregativeParam(Map<String, Integer> aggregativeParam) {
+            this.aggregativeParam = aggregativeParam;
+        }
+
+        @Override
+        public String toString() {
+            return "JournalistViewPage{" +
+                    "journalists=" + journalists +
+                    ", aggregativeParam=" + aggregativeParam +
+                    '}';
+        }
     }
 }

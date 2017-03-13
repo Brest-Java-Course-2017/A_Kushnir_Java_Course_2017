@@ -15,7 +15,10 @@ import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Journalist DAO implementation
@@ -55,6 +58,9 @@ public class JournalistDaoImpl implements JournalistDao {
     @Value("${journalist.delete}")
     String deleteJournalistSqlQuery;
 
+    @Value("${journalist.selectAllForPrint}")
+    String getAllForPrint;
+
     public JournalistDaoImpl(DataSource dataSource) {
         namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
@@ -68,6 +74,18 @@ public class JournalistDaoImpl implements JournalistDao {
                 ,parameterSource
                 ,new JournalistsRowMapper());
         return journalistList;
+    }
+
+    @Override
+    public Journalist.JournalistViewPage getDataJournalistViewPage(LocalDate birthDateStart, LocalDate birthDateEnd) {
+        MapSqlParameterSource parameterSource = new MapSqlParameterSource();
+        parameterSource.addValue(BIRTHDAY_START_PARAMETERNAME, birthDateStart);
+        parameterSource.addValue(BIRTHDAY_END_PARAMETERNAME, birthDateEnd);
+        Journalist.JournalistViewPage journalistViewPage = namedParameterJdbcTemplate.queryForObject(
+                getAllForPrint
+                ,parameterSource
+                ,new JournalistViewPageRowMapper());
+        return journalistViewPage;
     }
 
     @Override
@@ -129,4 +147,30 @@ public class JournalistDaoImpl implements JournalistDao {
         }
     }
 
+    private class JournalistViewPageRowMapper implements RowMapper<Journalist.JournalistViewPage> {
+
+        @Override
+        public Journalist.JournalistViewPage mapRow(ResultSet resultSet, int i) throws SQLException {
+            List<Journalist> journalistList = new ArrayList<>();
+            Map<String, Integer> param = new HashMap<>();
+            int count =0;
+            int sumRating = 0;
+
+            while(resultSet.next()) {
+                journalistList.add(new Journalist(
+                        resultSet.getInt(ID_FIELDNAME)
+                        ,resultSet.getString(NAME_FIELDNAME)
+                        ,resultSet.getInt(RATING_FIELDNAME)
+                        ,resultSet.getDate(BIRTHDATE_FIELDNAME).toLocalDate()));
+                count ++;
+                sumRating += resultSet.getInt(RATING_FIELDNAME);
+            }
+
+            param.put("FIELDS_COUNT", count);
+            param.put("sumRating", sumRating);
+
+            return new Journalist.JournalistViewPage(journalistList, param);
+        }
+    }
+// BeanPropertySqlParameterSource
 }

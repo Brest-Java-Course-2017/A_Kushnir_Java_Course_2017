@@ -97,7 +97,7 @@ public class TestArticleDaoImpl {
         assertNotNull(newArticleId);
 
         int countArticlesBefore = articleDao.getAllArticles(null, null).size();
-        articleDao.deleteArticle(newArticleId);
+        assertTrue(articleDao.deleteArticle(newArticleId) == 1);
         int countArticlesAfter = articleDao.getAllArticles(null,null).size();
 
         assertTrue(countArticlesBefore > countArticlesAfter);
