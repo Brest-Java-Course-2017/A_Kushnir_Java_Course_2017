@@ -31,7 +31,17 @@ public interface ArticleDao {
      * @returnType ??
      * @throws DataAccessException
      */
-    // TODO List getAllArticlesWithDetails method
+
+    /**
+     * Get aggregative data for view Articles page.
+     *
+     * @param createDateStart
+     * @param createDateEnd
+     * @return Article.ArticleDisplayPage object
+     * @returnType Article.ArticleDisplayPage
+     * @throws DataAccessException
+     */
+    Article.ArticleDisplayPage getDataArticleDisplayPage (LocalDate createDateStart, LocalDate createDateEnd);
 
     /**
      * Get article from database by id.

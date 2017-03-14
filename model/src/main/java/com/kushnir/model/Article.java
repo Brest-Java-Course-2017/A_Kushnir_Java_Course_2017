@@ -1,6 +1,8 @@
 package com.kushnir.model;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -13,6 +15,7 @@ public class Article {
     private LocalDate   dateCreate;
     private Integer     popularity;
     private Integer     journalistId;
+    private String      journalilstName;
 
     public Article() {
     }
@@ -30,6 +33,15 @@ public class Article {
         this.dateCreate = dateCreate;
         this.popularity = popularity;
         this.journalistId = journalistId;
+    }
+
+    public Article(Integer id, String name, LocalDate dateCreate, Integer popularity, Integer journalistId, String journalilstName) {
+        this.id = id;
+        this.name = name;
+        this.dateCreate = dateCreate;
+        this.popularity = popularity;
+        this.journalistId = journalistId;
+        this.journalilstName = journalilstName;
     }
 
     public Integer getId() {
@@ -50,6 +62,10 @@ public class Article {
 
     public Integer getJournalistId() {
         return journalistId;
+    }
+
+    public String getJournalilstName() {
+        return journalilstName;
     }
 
     public void setId(Integer id) {
@@ -91,17 +107,59 @@ public class Article {
     }
 
     @Override
+    public String toString() {
+        return "Article{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", dateCreate=" + dateCreate +
+                ", popularity=" + popularity +
+                ", journalistId=" + journalistId +
+                ", journalilstName='" + journalilstName + '\'' +
+                '}';
+    }
+
+    @Override
     public int hashCode() {
         return Objects.hash(getName(), getDateCreate(), getPopularity(), getJournalistId());
     }
 
-    @Override
-    public String toString() {
-        return "Article{" +
-                "name='" + name + '\'' +
-                ", dateCreate=" + dateCreate +
-                ", popularity=" + popularity +
-                ", journalistId=" + journalistId +
-                '}';
+
+    // container for Articles Page print
+    public static class ArticleDisplayPage {
+        private List<Article> articles;
+        private Map<String, Integer> aggregativeParam;
+
+        public ArticleDisplayPage() {
+        }
+
+        public ArticleDisplayPage(List<Article> articles, Map<String, Integer> aggregativeParam) {
+            this.articles = articles;
+            this.aggregativeParam = aggregativeParam;
+        }
+
+        public List<Article> getArticles() {
+            return articles;
+        }
+
+        public Map<String, Integer> getAggregativeParam() {
+            return aggregativeParam;
+        }
+
+        public void setArticles(List<Article> articles) {
+            this.articles = articles;
+        }
+
+        public void setAggregativeParam(Map<String, Integer> aggregativeParam) {
+            this.aggregativeParam = aggregativeParam;
+        }
+
+        @Override
+        public String toString() {
+            return "ArticleDisplayPage{" +
+                    "articles=" + articles +
+                    ", aggregativeParam=" + aggregativeParam +
+                    '}';
+        }
     }
+
 }

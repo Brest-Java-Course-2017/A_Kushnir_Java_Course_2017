@@ -73,14 +73,14 @@ public interface JournalistDao {
     Integer deleteJournalist(Integer id) throws DataAccessException;
 
     /**
-     * Get aggregative data for view Journalist page.
+     * Get aggregative data for view Journalists page.
      *
      * @param birthDateStart
      * @param birthDateEnd
-     * @return Journalist.JournalistViewPage object
-     * @returnType Journalist.JournalistViewPage
+     * @return Journalist.JournalistDisplayPage object
+     * @returnType Journalist.JournalistDisplayPage
      * @throws DataAccessException
      */
-    Journalist.JournalistViewPage getDataJournalistViewPage(LocalDate birthDateStart, LocalDate birthDateEnd) throws DataAccessException;
+    Journalist.JournalistDisplayPage getDataJournalistDisplayPage(LocalDate birthDateStart, LocalDate birthDateEnd) throws DataAccessException;
 
 }

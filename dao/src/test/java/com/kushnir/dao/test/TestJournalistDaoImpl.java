@@ -1,5 +1,8 @@
 package com.kushnir.dao.test;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.kushnir.dao.JournalistDao;
 import com.kushnir.model.Journalist;
 import org.junit.*;
@@ -24,6 +27,8 @@ import static org.junit.Assert.*;
 @Transactional
 public class TestJournalistDaoImpl {
 
+    private static final Logger LOGGER = LogManager.getLogger();
+
     private static final Journalist JOURNALIST_NEW = new Journalist(
             "New Journalist",
             10,
@@ -33,23 +38,46 @@ public class TestJournalistDaoImpl {
             1,
             "Walter Cronkite",
             100,
-            LocalDate.parse("1916-11-04"));
+            LocalDate.parse("1916-11-04"),
+            0);
 
     @Autowired
     JournalistDao journalistDao;
+
+    @BeforeClass
+    public static void setUpBeforeClass() throws Exception {
+        LOGGER.error("execute: setUpBeforeClass()");
+    }
+
+    @AfterClass
+    public static void tearDownAfterClass() throws Exception {
+        LOGGER.error("execute: tearDownAfterClass()");
+    }
+
+    @Before
+    public void beforeTest() {
+        LOGGER.error("execute: beforeTest()");
+    }
+
+    @After
+    public void afterTest() {
+        LOGGER.error("execute: afterTest()");
+    }
 
     @Test
     public void getAllJournalistsTest() throws Exception {
         List<Journalist> journalists = journalistDao.getAllJournalists(null, null);
         assertNotNull(journalists);
         assertTrue(journalists.size() > 0);
+        LOGGER.debug("Test: getAllJournalists(), List<Journalist>: {}", journalists);
     }
 
     @Test
-    public void getJournalistViewPageTest() throws Exception {
-        Journalist.JournalistViewPage journalistViewPageData = journalistDao.getDataJournalistViewPage(null,null);
-        assertNotNull(journalistViewPageData);
-        System.out.print(journalistViewPageData);
+    public void getJournalistDisplayPageTest() throws Exception {
+        Journalist.JournalistDisplayPage journalistDisplayPageData = journalistDao.getDataJournalistDisplayPage(null,null);
+        assertNotNull(journalistDisplayPageData);
+        //assertTrue(journalistDisplayPageData.getJournalists().size() == 4);
+        LOGGER.debug("Test: getJournalistDisplayPage(), Journalist.JournalistDisplayPage: {}", journalistDisplayPageData);
     }
 
     @Test
@@ -57,6 +85,7 @@ public class TestJournalistDaoImpl {
         Journalist journalist = journalistDao.getJournalistById(JOURNALIST_WITH_ID_1.getId());
         assertNotNull(journalist);
         assertTrue(journalist.equals(JOURNALIST_WITH_ID_1));
+        LOGGER.debug("Test: getJournalistById(" + JOURNALIST_WITH_ID_1.getId() + "), journalist: {}", journalist);
     }
 
     @Test
@@ -64,10 +93,12 @@ public class TestJournalistDaoImpl {
         Journalist journalist = journalistDao.getJournalistByName(JOURNALIST_WITH_ID_1.getName());
         assertNotNull(journalist);
         assertTrue(journalist.equals(JOURNALIST_WITH_ID_1));
+        LOGGER.debug("Test: getJournalistByName(" + JOURNALIST_WITH_ID_1.getName() + "), journalist: {}", journalist);
     }
 
     @Test
     public void addJournalistTest() {
+        LOGGER.debug("Test: addJournalist()");
         int countJournalistsBefore = (journalistDao.getAllJournalists(null, null)).size();
         int newJournalistId = journalistDao.addJournalist(JOURNALIST_NEW);
         assertNotNull(newJournalistId);
@@ -78,6 +109,7 @@ public class TestJournalistDaoImpl {
 
     @Test
     public void updateJournalistTest() {
+        LOGGER.debug("Test: updateJournalist()");
         Journalist journalistBefore = journalistDao.getJournalistById(1);
         assertNotNull(journalistBefore);
         assertTrue(journalistDao.updateJournalist(
@@ -87,15 +119,16 @@ public class TestJournalistDaoImpl {
                         , LocalDate.of(1990,11,11))) > 0);
         Journalist journalistAfter = journalistDao.getJournalistById(journalistBefore.getId());
         assertNotNull(journalistAfter);
-        assertTrue(!journalistAfter.equals(journalistBefore));
+        assertFalse(journalistAfter.equals(journalistBefore));
     }
 
     @Test
     public void deleteJournalistTest() {
+        LOGGER.debug("Test: deleteJournalist()");
         int newJournalistId = journalistDao.addJournalist(JOURNALIST_NEW);
         assertNotNull(newJournalistId);
         int countJournalistsBefore = (journalistDao.getAllJournalists(null, null)).size();
-        assertTrue(journalistDao.deleteJournalist(newJournalistId) == 1);
+        assertTrue(journalistDao.deleteJournalist(newJournalistId) > 0);
         int countJournalistsAfter = journalistDao.getAllJournalists(null,null).size();
         assertTrue(countJournalistsBefore > countJournalistsAfter);
 

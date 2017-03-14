@@ -1,8 +1,11 @@
 package com.kushnir.dao.test;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.kushnir.dao.ArticleDao;
 import com.kushnir.model.Article;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -23,6 +26,8 @@ import static org.junit.Assert.*;
 @ContextConfiguration(locations = {"classpath*:test-spring-dao.xml"})
 @Transactional
 public class TestArticleDaoImpl {
+
+    private static final Logger LOGGER = LogManager.getLogger();
 
     private static final Article ARTICLE_NEW = new Article(
             "New Article"
@@ -47,20 +52,48 @@ public class TestArticleDaoImpl {
     @Autowired
     ArticleDao articleDao;
 
+    @BeforeClass
+    public static void setUpBeforeClass() throws Exception {
+        LOGGER.error("execute: setUpBeforeClass()");
+    }
+
+    @AfterClass
+    public static void tearDownAfterClass() throws Exception {
+        LOGGER.error("execute: tearDownAfterClass()");
+    }
+
+    @Before
+    public void beforeTest() {
+        LOGGER.error("execute: beforeTest()");
+    }
+
+    @After
+    public void afterTest() {
+        LOGGER.error("execute: afterTest()");
+    }
+
     @Test
     public void getAllArticlesTest () {
         List<Article> articleList = articleDao.getAllArticles(null,null);
         assertNotNull(articleList);
         assertTrue(articleList.size() > 0);
+        LOGGER.debug("Test: getAllArticles(), List<Article>: {}", articleList);
     }
 
-    // TODO getAllArticlesWithDetails method test
+    @Test
+    public void getAllArticlesWithDetailsTest () {
+        Article.ArticleDisplayPage articleDisplayPage = articleDao.getDataArticleDisplayPage(null,null);
+        assertNotNull(articleDisplayPage);
+        //assertTrue(articleDisplayPage.getArticles().size() == 4);
+        LOGGER.debug("Test: getAllArticlesWithDetails(), Article.ArticleDisplayPage: {}", articleDisplayPage);
+    }
 
     @Test
     public void getArticleByIdTest () {
         Article article = articleDao.getArticleById(ARTICLE_WITH_ID_1.getId());
         assertNotNull(article);
         assertTrue(article.equals(ARTICLE_WITH_ID_1));
+        LOGGER.debug("Test: getArticleById(" + ARTICLE_WITH_ID_1.getId() + "), Article: {}", article);
     }
 
     @Test
@@ -68,10 +101,12 @@ public class TestArticleDaoImpl {
         Article article = articleDao.getArticleByNaim(ARTICLE_WITH_ID_1.getName());
         assertNotNull(article);
         assertTrue(article.equals(ARTICLE_WITH_ID_1));
+        LOGGER.debug("Test: getArticleByNaim(" + ARTICLE_WITH_ID_1.getName() + "), Article: {}", article);
     }
 
     @Test
     public void addArticleTest () {
+        LOGGER.debug("Test: addArticle()");
         int countArticlesBefore = (articleDao.getAllArticles(null, null)).size();
         int newArticleId = articleDao.addArticle(ARTICLE_NEW);
         assertNotNull(newArticleId);
@@ -82,6 +117,7 @@ public class TestArticleDaoImpl {
 
     @Test
     public void updateArticleTest () {
+        LOGGER.debug("Test: updateArticle()");
         Article articleBefore = articleDao.getArticleById(1);
         assertNotNull(articleBefore);
         assertTrue(articleDao.updateArticle(ARTICLE_WITH_ID_1_TO_UPDATE) > 0);
@@ -93,6 +129,7 @@ public class TestArticleDaoImpl {
 
     @Test
     public void deleteArticleTest () {
+        LOGGER.debug("Test: deleteArticle()");
         int newArticleId = articleDao.addArticle(ARTICLE_NEW);
         assertNotNull(newArticleId);
 

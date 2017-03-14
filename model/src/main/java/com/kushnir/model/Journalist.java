@@ -14,6 +14,7 @@ public class Journalist {
     private String      name;
     private Integer     rate;
     private LocalDate   birthDate;
+    private Integer     countArticle;
 
     public Journalist() {
     }
@@ -31,6 +32,14 @@ public class Journalist {
         this.birthDate = birthDate;
     }
 
+    public Journalist(Integer id, String name, Integer rate, LocalDate birthDate, Integer countArticle) {
+        this.id = id;
+        this.name = name;
+        this.rate = rate;
+        this.birthDate = birthDate;
+        this.countArticle = countArticle;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -45,6 +54,10 @@ public class Journalist {
 
     public LocalDate getBirthDate() {
         return birthDate;
+    }
+
+    public Integer getCountArticle() {
+        return countArticle;
     }
 
     public void setId(Integer id) {
@@ -64,8 +77,8 @@ public class Journalist {
     }
 
     /*
-        * This method set birthDate from string in format: "YYYY-MM-DD"
-        */
+    * This method set birthDate from string in format: "YYYY-MM-DD"
+     */
     public void setBirthDateFromString(String birthDate) {
         this.birthDate = LocalDate.parse(birthDate);
     }
@@ -78,12 +91,13 @@ public class Journalist {
         return Objects.equals(getId(), that.getId()) &&
                 Objects.equals(getName(), that.getName()) &&
                 Objects.equals(getRate(), that.getRate()) &&
-                Objects.equals(getBirthDate(), that.getBirthDate());
+                Objects.equals(getBirthDate(), that.getBirthDate()) &&
+                Objects.equals(getCountArticle(), that.getCountArticle());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), getRate(), getBirthDate());
+        return Objects.hash(getId(), getName(), getRate(), getBirthDate(), getCountArticle());
     }
 
     @Override
@@ -93,18 +107,19 @@ public class Journalist {
                 ", name='" + name + '\'' +
                 ", rate=" + rate +
                 ", birthDate=" + birthDate +
+                ", countArticle=" + countArticle +
                 '}';
     }
 
     // container for Journalists Page print
-    public static class JournalistViewPage {
+    public static class JournalistDisplayPage {
         private List<Journalist> journalists;
         private Map<String, Integer> aggregativeParam;
 
-        public JournalistViewPage() {
+        public JournalistDisplayPage() {
         }
 
-        public JournalistViewPage(List<Journalist> journalists, Map<String, Integer> aggregativeParam) {
+        public JournalistDisplayPage(List<Journalist> journalists, Map<String, Integer> aggregativeParam) {
             this.journalists = journalists;
             this.aggregativeParam = aggregativeParam;
         }
@@ -127,7 +142,7 @@ public class Journalist {
 
         @Override
         public String toString() {
-            return "JournalistViewPage{" +
+            return "JournalistDisplayPage{" +
                     "journalists=" + journalists +
                     ", aggregativeParam=" + aggregativeParam +
                     '}';
