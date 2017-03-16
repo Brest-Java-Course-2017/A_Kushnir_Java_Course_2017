@@ -124,42 +124,4 @@ public class Article {
     }
 
 
-    // container for Articles Page print
-    public static class ArticleDisplayPage {
-        private List<Article> articles;
-        private Map<String, Integer> aggregativeParam;
-
-        public ArticleDisplayPage() {
-        }
-
-        public ArticleDisplayPage(List<Article> articles, Map<String, Integer> aggregativeParam) {
-            this.articles = articles;
-            this.aggregativeParam = aggregativeParam;
-        }
-
-        public List<Article> getArticles() {
-            return articles;
-        }
-
-        public Map<String, Integer> getAggregativeParam() {
-            return aggregativeParam;
-        }
-
-        public void setArticles(List<Article> articles) {
-            this.articles = articles;
-        }
-
-        public void setAggregativeParam(Map<String, Integer> aggregativeParam) {
-            this.aggregativeParam = aggregativeParam;
-        }
-
-        @Override
-        public String toString() {
-            return "ArticleDisplayPage{" +
-                    "articles=" + articles +
-                    ", aggregativeParam=" + aggregativeParam +
-                    '}';
-        }
-    }
-
 }

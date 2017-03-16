@@ -23,27 +23,6 @@ public interface ArticleDao {
     List<Article> getAllArticles(LocalDate createDateStart, LocalDate createDateEnd) throws DataAccessException;
 
     /**
-     * Get all articles from database with Journalist name.
-     *
-     * @param createDateStart
-     * @param createDateEnd
-     * @return ??
-     * @returnType ??
-     * @throws DataAccessException
-     */
-
-    /**
-     * Get aggregative data for view Articles page.
-     *
-     * @param createDateStart
-     * @param createDateEnd
-     * @return Article.ArticleDisplayPage object
-     * @returnType Article.ArticleDisplayPage
-     * @throws DataAccessException
-     */
-    Article.ArticleDisplayPage getDataArticleDisplayPage (LocalDate createDateStart, LocalDate createDateEnd);
-
-    /**
      * Get article from database by id.
      *
      * @param id Article

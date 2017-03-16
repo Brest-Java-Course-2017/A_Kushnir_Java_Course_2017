@@ -54,22 +54,22 @@ public class TestArticleDaoImpl {
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-        LOGGER.error("execute: setUpBeforeClass()");
+        LOGGER.debug("execute: setUpBeforeClass()");
     }
 
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
-        LOGGER.error("execute: tearDownAfterClass()");
+        LOGGER.debug("execute: tearDownAfterClass()");
     }
 
     @Before
     public void beforeTest() {
-        LOGGER.error("execute: beforeTest()");
+        LOGGER.debug("execute: beforeTest()");
     }
 
     @After
     public void afterTest() {
-        LOGGER.error("execute: afterTest()");
+        LOGGER.debug("execute: afterTest()");
     }
 
     @Test
@@ -78,14 +78,6 @@ public class TestArticleDaoImpl {
         assertNotNull(articleList);
         assertTrue(articleList.size() > 0);
         LOGGER.debug("Test: getAllArticles(), List<Article>: {}", articleList);
-    }
-
-    @Test
-    public void getAllArticlesWithDetailsTest () {
-        Article.ArticleDisplayPage articleDisplayPage = articleDao.getDataArticleDisplayPage(null,null);
-        assertNotNull(articleDisplayPage);
-        //assertTrue(articleDisplayPage.getArticles().size() == 4);
-        LOGGER.debug("Test: getAllArticlesWithDetails(), Article.ArticleDisplayPage: {}", articleDisplayPage);
     }
 
     @Test

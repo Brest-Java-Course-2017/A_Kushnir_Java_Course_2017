@@ -16,10 +16,7 @@ import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Article DAO implementation
@@ -82,19 +79,6 @@ public class ArticleDaoImpl implements ArticleDao {
     }
 
     @Override
-    public Article.ArticleDisplayPage getDataArticleDisplayPage(LocalDate createDateStart, LocalDate createDateEnd) {
-        LOGGER.debug("getDataArticleDisplayPage(createDateStart: " + createDateStart + ", createDateEnd: " + createDateEnd);
-        MapSqlParameterSource parameterSource = new MapSqlParameterSource();
-        parameterSource.addValue(CREATEDATE_START_PARAMETERNAME,createDateStart);
-        parameterSource.addValue(CREATEDATE_END_PARAMETERNAME,createDateEnd);
-        Article.ArticleDisplayPage articleDisplayPage = namedParameterJdbcTemplate.queryForObject(
-                getAllArticlesSqlquery
-                ,parameterSource
-                ,new ArticleDisplayPageRowMapper());
-        return articleDisplayPage;
-    }
-
-    @Override
     public Article getArticleById(Integer id) throws DataAccessException {
         LOGGER.debug("getArticleById(id: " + id);
         MapSqlParameterSource parameterSource = new MapSqlParameterSource(ID_PARAMETERNAME, id);
@@ -148,7 +132,6 @@ public class ArticleDaoImpl implements ArticleDao {
         return namedParameterJdbcTemplate.update(deleteArticleSqlquery, parameterSource);
     }
 
-
     private class ArticleRowMapper implements RowMapper<Article> {
 
         @Override
@@ -164,34 +147,5 @@ public class ArticleDaoImpl implements ArticleDao {
         }
     }
 
-    private class ArticleDisplayPageRowMapper implements RowMapper<Article.ArticleDisplayPage> {
-
-        @Override
-        public Article.ArticleDisplayPage mapRow(ResultSet resultSet, int i) throws SQLException {
-            List<Article> ArticleList = new ArrayList<>();
-            Map<String, Integer> aggregativeValues = new HashMap<>();
-            int count = 0;
-            int sumPopularity = 0;
-
-            while(resultSet.next()) {
-                ArticleList.add(new Article(
-                        resultSet.getInt(ID_FIELDNAME)
-                        ,resultSet.getString(NAIM_FIELDNAME)
-                        ,resultSet.getDate(CREATEDATE_FIELDNAME).toLocalDate()
-                        ,resultSet.getInt(POPULARITY_FIELDNAME)
-                        ,resultSet.getInt(IDJOURNALIST_FIELDNAME)
-                        ,resultSet.getString(NAMEJOURNALIST_FIELDNAME)));
-
-                count ++;
-                sumPopularity += resultSet.getInt(POPULARITY_FIELDNAME);
-            }
-
-            aggregativeValues.put("fieldsCount", count);
-            aggregativeValues.put("sumPopularity", sumPopularity);
-            aggregativeValues.put("avgPopularity", sumPopularity/count);
-
-            return new Article.ArticleDisplayPage(ArticleList, aggregativeValues);
-        }
-    }
 
 }

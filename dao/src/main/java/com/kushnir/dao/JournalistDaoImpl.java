@@ -18,10 +18,7 @@ import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Journalist DAO implementation
@@ -80,19 +77,6 @@ public class JournalistDaoImpl implements JournalistDao {
                 ,parameterSource
                 ,new JournalistsRowMapper());
         return journalistList;
-    }
-
-    @Override
-    public Journalist.JournalistDisplayPage getDataJournalistDisplayPage(LocalDate birthDateStart, LocalDate birthDateEnd) {
-        LOGGER.debug("getDataJournalistDisplayPage(birthDateStart: " + birthDateStart + ", birthDateEnd: " + birthDateEnd);
-        MapSqlParameterSource parameterSource = new MapSqlParameterSource();
-        parameterSource.addValue(BIRTHDAY_START_PARAMETERNAME, birthDateStart);
-        parameterSource.addValue(BIRTHDAY_END_PARAMETERNAME, birthDateEnd);
-        Journalist.JournalistDisplayPage journalistDisplayPage = namedParameterJdbcTemplate.queryForObject(
-                getAllJournalistsSqlquery
-                ,parameterSource
-                ,new JournalistDisplayPageRowMapper());
-        return journalistDisplayPage;
     }
 
     @Override
@@ -162,33 +146,4 @@ public class JournalistDaoImpl implements JournalistDao {
         }
     }
 
-    private class JournalistDisplayPageRowMapper implements RowMapper<Journalist.JournalistDisplayPage> {
-
-        @Override
-        public Journalist.JournalistDisplayPage mapRow(ResultSet resultSet, int i) throws SQLException {
-            List<Journalist> journalistList = new ArrayList<>();
-            Map<String, Integer> aggregativeValues = new HashMap<>();
-            int count = 0;
-            int sumRating = 0;
-
-            while(resultSet.next()) {
-                journalistList.add(new Journalist(
-                        resultSet.getInt(ID_FIELDNAME)
-                        ,resultSet.getString(NAME_FIELDNAME)
-                        ,resultSet.getInt(RATING_FIELDNAME)
-                        ,resultSet.getDate(BIRTHDATE_FIELDNAME).toLocalDate()
-                        ,resultSet.getInt(COUNTARTICLES_FIELDNAME)));
-
-                count ++;
-                sumRating += resultSet.getInt(RATING_FIELDNAME);
-            }
-
-            aggregativeValues.put("fieldsCount", count);
-            aggregativeValues.put("sumRating", sumRating);
-            aggregativeValues.put("avgRating", sumRating/count);
-
-            return new Journalist.JournalistDisplayPage(journalistList, aggregativeValues);
-        }
-    }
-// BeanPropertySqlParameterSource
 }
