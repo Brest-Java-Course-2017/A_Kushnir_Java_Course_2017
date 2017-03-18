@@ -18,6 +18,7 @@
         <module>dao-api</module>
         <module>dao</module>
         <module>service-api</module>
+        <module>service</module>
     </modules>
 
     <properties>
@@ -53,6 +54,16 @@
             <dependency>
                 <groupId>com.kushnir</groupId>
                 <artifactId>dao</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.kushnir</groupId>
+                <artifactId>service-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.kushnir</groupId>
+                <artifactId>service</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
