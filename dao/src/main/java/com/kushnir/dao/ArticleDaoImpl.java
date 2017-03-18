@@ -65,6 +65,9 @@ public class ArticleDaoImpl implements ArticleDao {
     @Value("${article.delete}")
     String deleteArticleSqlquery;
 
+    @Value("${article.deleteByJournalist}")
+    String deleteArticleByJournalistIDSqlquery;
+
     @Override
     public List<Article> getAllArticles(LocalDate createDateStart, LocalDate createDateEnd) throws DataAccessException {
         LOGGER.debug("getAllArticles(createDateStart: " + createDateStart + ", createDateEnd: " + createDateEnd);
@@ -132,6 +135,13 @@ public class ArticleDaoImpl implements ArticleDao {
         return namedParameterJdbcTemplate.update(deleteArticleSqlquery, parameterSource);
     }
 
+    @Override
+    public Integer deleteArticleByJournalistID (Integer id) throws DataAccessException {
+        LOGGER.debug("deleteArticleByJournalist(id: " + id);
+        MapSqlParameterSource parameterSource = new MapSqlParameterSource(IDJOURNALIST_PARAMETERNAME, id);
+        return namedParameterJdbcTemplate.update(deleteArticleByJournalistIDSqlquery, parameterSource);
+    }
+
     private class ArticleRowMapper implements RowMapper<Article> {
 
         @Override
@@ -146,6 +156,5 @@ public class ArticleDaoImpl implements ArticleDao {
             return article;
         }
     }
-
 
 }

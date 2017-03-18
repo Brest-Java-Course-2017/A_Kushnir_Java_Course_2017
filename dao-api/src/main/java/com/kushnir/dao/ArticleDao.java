@@ -72,4 +72,14 @@ public interface ArticleDao {
      */
     Integer deleteArticle (Integer id) throws DataAccessException;
 
+    /**
+     * Delete article from database by Joournalist ID.
+     *
+     * @param id Journalist
+     * @return number of rows successfully deleted
+     * @returnType Intrger
+     * @throws DataAccessException
+     */
+    Integer deleteArticleByJournalistID (Integer id) throws DataAccessException;
+
 }
