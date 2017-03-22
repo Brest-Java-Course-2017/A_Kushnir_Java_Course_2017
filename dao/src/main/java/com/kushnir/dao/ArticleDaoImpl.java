@@ -50,6 +50,9 @@ public class ArticleDaoImpl implements ArticleDao {
     @Value("${article.selectAll}")
     String getAllArticlesSqlquery;
 
+    @Value("${article.selectAllByJournalistId}")
+    String getAllArticlesByJournalistIdSqlquery;
+
     @Value("${article.selectByID}")
     String getArticleByIdsSqlquery;
 
@@ -70,12 +73,23 @@ public class ArticleDaoImpl implements ArticleDao {
 
     @Override
     public List<Article> getAllArticles(LocalDate createDateStart, LocalDate createDateEnd) throws DataAccessException {
-        LOGGER.debug("getAllArticles(createDateStart: " + createDateStart + ", createDateEnd: " + createDateEnd);
+        LOGGER.debug("getAllArticles(createDateStart: " + createDateStart + ", createDateEnd: " + createDateEnd+")");
         MapSqlParameterSource parameterSource = new MapSqlParameterSource();
         parameterSource.addValue(CREATEDATE_START_PARAMETERNAME,createDateStart);
         parameterSource.addValue(CREATEDATE_END_PARAMETERNAME,createDateEnd);
         List<Article> articleList = namedParameterJdbcTemplate.query(
                 getAllArticlesSqlquery
+                ,parameterSource
+                ,new ArticleRowMapper());
+        return articleList;
+    }
+
+    @Override
+    public List<Article> getAllArticlesByJournalistId (Integer id) {
+        LOGGER.debug("getAllArticlesByJournalistId(id: "+id+")");
+        MapSqlParameterSource parameterSource = new MapSqlParameterSource(IDJOURNALIST_PARAMETERNAME, id);
+        List<Article> articleList = namedParameterJdbcTemplate.query(
+                getAllArticlesByJournalistIdSqlquery
                 ,parameterSource
                 ,new ArticleRowMapper());
         return articleList;

@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.kushnir.dao.ArticleDao;
 import com.kushnir.model.Article;
+
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +50,8 @@ public class TestArticleDaoImpl {
             , 0
             ,1);
 
+    private static final Integer JOURNALIST_ID = 2;
+
     @Autowired
     ArticleDao articleDao;
 
@@ -78,6 +81,14 @@ public class TestArticleDaoImpl {
         assertNotNull(articleList);
         assertTrue(articleList.size() > 0);
         LOGGER.debug("Test: getAllArticles(), List<Article>: {}", articleList);
+    }
+
+    @Test
+    public void getAllArticlesByJournalistIdTest () {
+        List<Article> articleList = articleDao.getAllArticlesByJournalistId(JOURNALIST_ID);
+        assertNotNull(articleList);
+        assertTrue(articleList.size() > 0);
+        LOGGER.debug("Test: getAllArticlesByJournalistIdTest(), List<Article>: {}", articleList);
     }
 
     @Test

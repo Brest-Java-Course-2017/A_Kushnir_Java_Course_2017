@@ -12,7 +12,7 @@ import java.util.List;
 public interface ArticleDao {
 
     /**
-     * Get all articles from database.
+     * Get all articles from database by createDate.
      *
      * @param createDateStart
      * @param createDateEnd
@@ -21,6 +21,16 @@ public interface ArticleDao {
      * @throws DataAccessException
      */
     List<Article> getAllArticles(LocalDate createDateStart, LocalDate createDateEnd) throws DataAccessException;
+
+    /**
+     * Get all articles from database by Journalist id.
+     *
+     * @param id Journalist
+     * @return articles from DB
+     * @returnType List<Article>
+     * @throws DataAccessException
+     */
+    List<Article> getAllArticlesByJournalistId (Integer id) throws DataAccessException;
 
     /**
      * Get article from database by id.
@@ -46,7 +56,7 @@ public interface ArticleDao {
      * Add article to the database.
      *
      * @param article
-     * @return number of rows successfully added
+     * @return new article ID (autoincrement)
      * @returnType Intrger
      * @throws DataAccessException
      */

@@ -1,11 +1,16 @@
 package com.kushnir.service;
 
 import com.kushnir.dao.ArticleDao;
+import com.kushnir.dao.JournalistDao;
 import com.kushnir.model.Article;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.time.LocalDate;
@@ -14,12 +19,17 @@ import java.util.List;
 /**
  * Article Service implementation
  */
+@Service
+@Transactional
 public class ArticleServiceImpl implements ArticleService {
 
     private static final Logger LOGGER = LogManager.getLogger();
 
     @Autowired
     ArticleDao articleDao;
+
+    @Autowired
+    JournalistDao journalistDao;
 
     @Override
     public List<Article> getAllArticles(LocalDate createDateStart, LocalDate createDateEnd) {
@@ -29,8 +39,15 @@ public class ArticleServiceImpl implements ArticleService {
                     createDateStart.isBefore(createDateEnd)
                     ,"createDateStart must be before createDateEnd");
         }
-
         return articleDao.getAllArticles(createDateStart ,createDateEnd);
+    }
+
+    @Override
+    public List<Article> getAllArticlesByJournalistId(Integer id) {
+        LOGGER.debug("getAllArticlesByJournalistId(id: "+id+")");
+        Assert.notNull(id, "The id must not be empty");
+        Assert.isTrue(id > 0, "The id must be greater than zero");
+        return articleDao.getAllArticlesByJournalistId(id);
     }
 
     @Override
@@ -52,14 +69,20 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public Integer addArticle(Article article) {
         LOGGER.debug("addArticle(article: {})", article);
-        Assert.notNull(article, "article must be empty");
+        Assert.notNull(article, "article must not be empty");
         Assert.isNull(article.getId(), "article id must be empty");
         Assert.notNull(article.getName(), "The naim must not be empty");
         Assert.notNull(article.getDateCreate(), "The DateCreate must not be empty");
         Assert.isTrue(article.getDateCreate().isBefore(LocalDate.now()), "The DateCreate must be before today");
         Assert.notNull(article.getPopularity(), "The Popularity must not be empty");
         Assert.notNull(article.getJournalistId(), "The JournalistId must not be empty");
-
+        try {
+            journalistDao.getJournalistById(article.getJournalistId());
+        } catch (EmptyResultDataAccessException e) {
+            throw new IllegalArgumentException(
+                    "Journalist with id("+article.getJournalistId()+") " +
+                            "specified in the article, does not exist in the database");
+        }
         return articleDao.addArticle(article);
     }
 

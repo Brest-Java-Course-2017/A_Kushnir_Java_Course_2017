@@ -15,25 +15,37 @@
         <!-- project modules -->
         <dependency>
             <groupId>com.kushnir</groupId>
+            <artifactId>model</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.kushnir</groupId>
             <artifactId>service-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.kushnir</groupId>
+            <artifactId>dao-api</artifactId>
         </dependency>
         <dependency>
             <groupId>com.kushnir</groupId>
             <artifactId>dao</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.kushnir</groupId>
+            <artifactId>db</artifactId>
+        </dependency>
 
         <!-- SPRING -->
         <dependency>
             <groupId>org.springframework</groupId>
-            <artifactId>spring-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-beans</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
         </dependency>
 
         <!-- for testing -->
@@ -50,10 +62,6 @@
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-core</artifactId>
         </dependency>
 
     </dependencies>
