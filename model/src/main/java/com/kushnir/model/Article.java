@@ -1,8 +1,6 @@
 package com.kushnir.model;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -15,7 +13,7 @@ public class Article {
     private LocalDate   dateCreate;
     private Integer     popularity;
     private Integer     journalistId;
-    private String      journalilstName;
+    private String journalistName;
 
     public Article() {
     }
@@ -35,13 +33,13 @@ public class Article {
         this.journalistId = journalistId;
     }
 
-    public Article(Integer id, String name, LocalDate dateCreate, Integer popularity, Integer journalistId, String journalilstName) {
+    public Article(Integer id, String name, LocalDate dateCreate, Integer popularity, Integer journalistId, String journalistName) {
         this.id = id;
         this.name = name;
         this.dateCreate = dateCreate;
         this.popularity = popularity;
         this.journalistId = journalistId;
-        this.journalilstName = journalilstName;
+        this.journalistName = journalistName;
     }
 
     public Integer getId() {
@@ -64,8 +62,8 @@ public class Article {
         return journalistId;
     }
 
-    public String getJournalilstName() {
-        return journalilstName;
+    public String getJournalistName() {
+        return journalistName;
     }
 
     public void setId(Integer id) {
@@ -114,7 +112,7 @@ public class Article {
                 ", dateCreate=" + dateCreate +
                 ", popularity=" + popularity +
                 ", journalistId=" + journalistId +
-                ", journalilstName='" + journalilstName + '\'' +
+                ", journalistName='" + journalistName + '\'' +
                 '}';
     }
 
