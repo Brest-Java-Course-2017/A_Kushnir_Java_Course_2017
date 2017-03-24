@@ -1,27 +1,27 @@
 package com.kushnir.service.test.junit;
 
-import com.kushnir.dao.ArticleDao;
+import com.kushnir.service.JournalistService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import org.junit.*;
 import org.junit.runner.RunWith;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Junit Test of Article Service implementation
+ * Junit Negative Test of Journalist Service implementation
  */
 @RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"classpath:spring-service-test-config.xml"})
 @Transactional
-public class ArticleServiceImplTestJunit {
+public class JournalistServiceImplNegativeTestJunit {
 
     private static final Logger LOGGER = LogManager.getLogger();
 
     @Autowired
-    ArticleDao articleDao;
+    JournalistService journalistService;
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
@@ -43,24 +43,35 @@ public class ArticleServiceImplTestJunit {
         LOGGER.debug("execute: afterTest()");
     }
 
-    // TODO: positive test getAllArticles ()
-    // TODO: negative test getAllArticles ()
 
-    // TODO: positive test getArticleById ()
-    // TODO: negative test getArticleById ()
+    @Test
+    public void getAllJournalistsNegativeTest() throws Exception {
 
-    // TODO: positive test getArticleByNaim ()
-    // TODO: negative test getArticleByNaim ()
+    }
 
-    // TODO: positive test addArticle ()
-    // TODO: negative test addArticle ()
+    @Test
+    public void getJournalistByIdNegativeTest() throws Exception {
 
-    // TODO: positive test updateArticle ()
-    // TODO: negative test updateArticle ()
+    }
 
-    // TODO: positive test deleteArticle ()
-    // TODO: negative test deleteArticle ()
+    @Test
+    public void getJournalistByNameNegativeTest() throws Exception {
 
-    // TODO: positive test deleteArticleByJournalistID ()
-    // TODO: negative test deleteArticleByJournalistID ()
+    }
+
+    @Test
+    public void addJournalistNegativeTest() throws Exception {
+
+    }
+
+    @Test
+    public void updateJournalistNegativeTest() throws Exception {
+
+    }
+
+    @Test
+    public void deleteJournalistPositiveTest() throws Exception {
+
+    }
+
 }
