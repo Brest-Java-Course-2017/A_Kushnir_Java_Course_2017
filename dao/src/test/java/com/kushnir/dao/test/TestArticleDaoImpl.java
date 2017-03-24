@@ -38,7 +38,7 @@ public class TestArticleDaoImpl {
 
     private static final Article ARTICLE_WITH_ID_1 = new Article(
             1
-            ,"Chechnya. BUSINESS ON \"EIGHTH MARCH"
+            ,"Chechnya. BUSINESS ON EIGHTH MARCH"
             , LocalDate.parse("2005-12-05")
             ,100
             ,4);

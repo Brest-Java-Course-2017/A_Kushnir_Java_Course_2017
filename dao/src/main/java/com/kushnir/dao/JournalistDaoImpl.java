@@ -81,7 +81,7 @@ public class JournalistDaoImpl implements JournalistDao {
 
     @Override
     public Journalist getJournalistById(Integer id) throws DataAccessException {
-        LOGGER.debug("getJournalistById(id: " + id + ")");
+        LOGGER.debug("getJournalistById(id: {})", id);
         SqlParameterSource namedParameters = new MapSqlParameterSource(ID_PARAMETERNAME, id);
         Journalist journalist = namedParameterJdbcTemplate.queryForObject(
                 getJournalistByIdSqlQuery
@@ -92,7 +92,7 @@ public class JournalistDaoImpl implements JournalistDao {
 
     @Override
     public Journalist getJournalistByName(String name) throws DataAccessException {
-        LOGGER.debug("getJournalistByName(name: " + name + ")");
+        LOGGER.debug("getJournalistByName(name: {})" + name + ")");
         SqlParameterSource namedParameters = new MapSqlParameterSource(NAME_PARAMETERNAME, name);
         Journalist journalist = namedParameterJdbcTemplate.queryForObject(
                 getJournalistByNameSqlQuery
@@ -103,7 +103,7 @@ public class JournalistDaoImpl implements JournalistDao {
 
     @Override
     public Integer addJournalist(Journalist journalist) throws DataAccessException {
-        LOGGER.debug("addJournalist(journalistName: " + journalist.getName() + ")");
+        LOGGER.debug("addJournalist(journalist: {})", journalist);
         KeyHolder keyHolder = new GeneratedKeyHolder();
         MapSqlParameterSource parameterSource = new MapSqlParameterSource();
         parameterSource.addValue(NAME_PARAMETERNAME, journalist.getName());
@@ -115,7 +115,7 @@ public class JournalistDaoImpl implements JournalistDao {
 
     @Override
     public Integer updateJournalist(Journalist journalist) throws DataAccessException {
-        LOGGER.debug("updateJournalist(journalistName: " + journalist.getName() + ")");
+        LOGGER.debug("updateJournalist(journalist: {})", journalist);
         MapSqlParameterSource parameterSource = new MapSqlParameterSource();
         parameterSource.addValue(ID_PARAMETERNAME, journalist.getId());
         parameterSource.addValue(NAME_PARAMETERNAME, journalist.getName());
@@ -126,7 +126,7 @@ public class JournalistDaoImpl implements JournalistDao {
 
     @Override
     public Integer deleteJournalist(Integer id) throws DataAccessException {
-        LOGGER.debug("deleteJournalist(id: " + id + ")");
+        LOGGER.debug("deleteJournalist(id: {))", id);
         MapSqlParameterSource parameterSource = new MapSqlParameterSource();
         parameterSource.addValue(ID_PARAMETERNAME, id);
         return namedParameterJdbcTemplate.update(deleteJournalistSqlQuery, parameterSource);

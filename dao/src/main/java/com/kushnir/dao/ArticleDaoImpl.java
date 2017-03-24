@@ -86,7 +86,7 @@ public class ArticleDaoImpl implements ArticleDao {
 
     @Override
     public List<Article> getAllArticlesByJournalistId (Integer id) {
-        LOGGER.debug("getAllArticlesByJournalistId(id: "+id+")");
+        LOGGER.debug("getAllArticlesByJournalistId(id: {})", id);
         MapSqlParameterSource parameterSource = new MapSqlParameterSource(IDJOURNALIST_PARAMETERNAME, id);
         List<Article> articleList = namedParameterJdbcTemplate.query(
                 getAllArticlesByJournalistIdSqlquery
@@ -97,7 +97,7 @@ public class ArticleDaoImpl implements ArticleDao {
 
     @Override
     public Article getArticleById(Integer id) throws DataAccessException {
-        LOGGER.debug("getArticleById(id: " + id);
+        LOGGER.debug("getArticleById(id: {})", id);
         MapSqlParameterSource parameterSource = new MapSqlParameterSource(ID_PARAMETERNAME, id);
         Article article = namedParameterJdbcTemplate.queryForObject(
                 getArticleByIdsSqlquery
@@ -108,7 +108,7 @@ public class ArticleDaoImpl implements ArticleDao {
 
     @Override
     public Article getArticleByNaim(String naim) throws DataAccessException {
-        LOGGER.debug("getArticleByNaim(naim: " + naim);
+        LOGGER.debug("getArticleByNaim(naim: {})", naim);
         MapSqlParameterSource parameterSource = new MapSqlParameterSource(NAIM_PARAMETERNAME, naim);
         Article article = namedParameterJdbcTemplate.queryForObject(
                 getArticleByNaimsSqlquery
@@ -119,7 +119,7 @@ public class ArticleDaoImpl implements ArticleDao {
 
     @Override
     public Integer addArticle(Article article) throws DataAccessException {
-        LOGGER.debug("addArticle(article: " + article);
+        LOGGER.debug("addArticle(article: {})", article);
         KeyHolder keyHolder = new GeneratedKeyHolder();
         MapSqlParameterSource parameterSource = new MapSqlParameterSource();
         parameterSource.addValue(NAIM_PARAMETERNAME, article.getName());
@@ -132,7 +132,7 @@ public class ArticleDaoImpl implements ArticleDao {
 
     @Override
     public Integer updateArticle(Article article) throws DataAccessException {
-        LOGGER.debug("updateArticle(article: " + article);
+        LOGGER.debug("updateArticle(article: {})", article);
         MapSqlParameterSource parameterSource = new MapSqlParameterSource();
         parameterSource.addValue(ID_PARAMETERNAME, article.getId());
         parameterSource.addValue(NAIM_PARAMETERNAME, article.getName());
@@ -144,14 +144,14 @@ public class ArticleDaoImpl implements ArticleDao {
 
     @Override
     public Integer deleteArticle(Integer id) throws DataAccessException {
-        LOGGER.debug("deleteArticle(id: " + id);
+        LOGGER.debug("deleteArticle(id: {})", id);
         MapSqlParameterSource parameterSource = new MapSqlParameterSource(ID_PARAMETERNAME, id);
         return namedParameterJdbcTemplate.update(deleteArticleSqlquery, parameterSource);
     }
 
     @Override
     public Integer deleteArticleByJournalistID (Integer id) throws DataAccessException {
-        LOGGER.debug("deleteArticleByJournalist(id: " + id);
+        LOGGER.debug("deleteArticleByJournalist(id: {})", id);
         MapSqlParameterSource parameterSource = new MapSqlParameterSource(IDJOURNALIST_PARAMETERNAME, id);
         return namedParameterJdbcTemplate.update(deleteArticleByJournalistIDSqlquery, parameterSource);
     }
