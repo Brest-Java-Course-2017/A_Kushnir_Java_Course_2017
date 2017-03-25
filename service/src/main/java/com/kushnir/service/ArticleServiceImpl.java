@@ -45,7 +45,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public List<Article> getAllArticlesByJournalistId(Integer id) throws IllegalArgumentException {
-        LOGGER.debug("getAllArticlesByJournalistId(id: "+id+")");
+        LOGGER.debug("getAllArticlesByJournalistId(id: {})", id);
         Assert.notNull(id, "The id must not be empty");
         Assert.isTrue(id > 0, "The id must be greater than zero");
         return articleDao.getAllArticlesByJournalistId(id);

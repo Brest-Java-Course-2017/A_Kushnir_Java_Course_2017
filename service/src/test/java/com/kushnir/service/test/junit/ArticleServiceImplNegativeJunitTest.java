@@ -23,7 +23,7 @@ import java.time.LocalDate;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring-service-test-config.xml"})
 @Transactional
-public class ArticleServiceImplNegativeTestJunit {
+public class ArticleServiceImplNegativeJunitTest {
 
     private static final Logger LOGGER = LogManager.getLogger();
 

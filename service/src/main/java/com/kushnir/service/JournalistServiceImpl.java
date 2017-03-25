@@ -77,9 +77,10 @@ public class JournalistServiceImpl implements JournalistService {
         Assert.notNull(journalist.getName(), "The name must not be empty");
         Assert.hasText(journalist.getName(), "The name must contain text");
         try {
-            Assert.isNull(articleDao.getArticleByNaim(journalist.getName()),
+            Assert.isNull(journalistDao.getJournalistByName(journalist.getName()),
                     "journalist by name (" + journalist.getName() + ") already exist in the database");
-        } catch (EmptyResultDataAccessException e) {}
+        } catch (EmptyResultDataAccessException e) {/*OK, Journalist by name does not exist*/}
+
         Assert.notNull(journalist.getBirthDate(), "The birthDate must not be empty");
         Assert.isTrue(journalist.getBirthDate().isBefore(LocalDate.now()), "The birthDate must be before today");
         Assert.notNull(journalist.getRate(), "The rating must not be empty");
@@ -98,10 +99,10 @@ public class JournalistServiceImpl implements JournalistService {
                     "journalist by id("+journalist.getId()+") " +
                             " does not exist in the database");
         } catch (EmptyResultDataAccessException e) {
-            throw new IllegalArgumentException(
-                    "journalist by id("+journalist.getId()+") " +
-                            " does not exist in the database");
+            throw new IllegalArgumentException("journalist by id("+journalist.getId()+") " +
+                    " does not exist in the database");
         }
+
         Assert.notNull(journalist.getName(), "The name must not be empty");
         Assert.hasText(journalist.getName(), "The name must contain text");
         Assert.notNull(journalist.getBirthDate(), "The birthDate must not be empty");
@@ -113,6 +114,7 @@ public class JournalistServiceImpl implements JournalistService {
     }
 
     @Override
+    @Transactional
     public Integer deleteJournalistById(Integer id) throws IllegalArgumentException {
         LOGGER.debug("deleteJournalistById(id: {})", id);
         Assert.notNull(id, "id must not be empty");

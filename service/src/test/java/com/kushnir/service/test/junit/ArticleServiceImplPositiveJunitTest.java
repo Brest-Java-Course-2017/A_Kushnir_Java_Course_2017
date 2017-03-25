@@ -25,7 +25,7 @@ import java.util.List;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring-service-test-config.xml"})
 @Transactional
-public class ArticleServiceImplPositiveTestJunit {
+public class ArticleServiceImplPositiveJunitTest {
 
     private static final Logger LOGGER = LogManager.getLogger();
 
